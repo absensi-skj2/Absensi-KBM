@@ -3,130 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEKOLAHKU - DASHBOARD MODERN v2</title>
-    <!-- Tailwind CSS Engine -->
-    <script src="https://tailwindcss.com"></script>
-    <!-- Font Awesome Pro-Style Icons -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <!-- Google Fonts Premium: Plus Jakarta Sans (Sangat Modern) -->
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>SEKOLAHKU - PORTAL UTAMA MODERN</title>
+    <!-- Jaminan Desain Mandiri Tanpa Internet Luar -->
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        /* Animasi kilauan halus pada kartu saat di-hover */
-        .hover-glow:hover { box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.15); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; min-h: screen; display: flex; flex-direction: column; color: #1e293b; }
+        
+        /* HEADER ATAS (NAVIGASI LUAR) */
+        header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 50; }
+        .header-title h1 { font-size: 20px; font-weight: 800; tracking: 1px; color: #ffffff; }
+        .header-title p { font-size: 11px; color: #a5b4fc; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+        .status-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); padding: 6px 14px; rounded-radius: 9999px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .status-dot { w: 8px; h: 8px; background-color: #34d399; border-radius: 50%; display: inline-block; }
+
+        /* KONTEN DUA KOLOM (SIDEBAR + ISI UTAMA) */
+        .wrapper { display: flex; flex: 1; min-height: calc(100vh - 65px); position: relative; }
+        
+        /* SIDEBAR KIRI */
+        aside { width: 260px; background-color: #0f172a; border-right: 1px solid #1e293b; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 0; }
+        .sidebar-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; padding: 0 20px; margin-bottom: 12px; tracking: 1px; }
+        .menu-list { display: flex; flex-direction: column; gap: 4px; padding: 0 10px; }
+        .menu-btn { width: 100%; border: none; padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; text-align: left; background: transparent; color: #94a3b8; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; }
+        .menu-btn:hover { background-color: #1e293b; color: white; }
+        .menu-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .logout-box { padding: 0 10px; border-top: 1px solid #1e293b; pt: 15px; }
+        .logout-btn { width: 100%; border: 1px solid rgba(244, 63, 94, 0.2); background-color: rgba(244, 63, 94, 0.05); color: #fb7185; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+        .logout-btn:hover { background-color: #e11d48; color: white; }
+
+        /* HALAMAN UTAMA SEBELAH KANAN */
+        main { flex: 1; padding: 30px; background-color: #f8fafc; }
+        .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .welcome-card span { font-size: 10px; font-weight: 800; background-color: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; text-transform: uppercase; tracking: 1px; }
+        .welcome-card h2 { font-size: 22px; font-weight: 800; margin-top: 10px; letter-spacing: -0.5px; }
+        .welcome-card p { font-size: 12px; color: #bfdbfe; margin-top: 4px; font-weight: 500; }
+
+        /* GRID KOTAK RINGKASAN DATA */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0,0,0,0.05); border-color: #4f46e5; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-icon { width: 44px; h: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; }
+        .icon-blue { background-color: #eff6ff; color: #2563eb; }
+        .icon-green { background-color: #ecfdf5; color: #059669; }
+        .icon-red { background-color: #fff1f2; color: #e11d48; }
+        .icon-orange { background-color: #fffbeb; color: #d97706; }
+        .card-value { font-size: 24px; font-weight: 800; color: #0f172a; }
+        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
+        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .card-action:hover { color: #3730a3; }
+
+        /* FOOTER */
+        footer { border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 40px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; tracking: 1px; }
+
+        /* PENGATURAN LAYAR HP (OTOMATIS RESPONSIF) */
+        @media (max-width: 768px) {
+            .wrapper { flex-direction: column; }
+            aside { width: 100%; min-height: auto; padding: 15px 0; border-right: none; border-bottom: 1px solid #1e293b; }
+            .sidebar-title { display: none; }
+            .menu-list { flex-direction: row; overflow-x: auto; padding: 0 15px; gap: 8px; }
+            .menu-btn { width: auto; white-space: nowrap; padding: 10px 14px; }
+            .logout-box { display: none; }
+            main { padding: 20px; }
+        }
     </style>
 </head>
-<body class="bg-[#f8fafc] min-h-screen flex flex-col antialiased text-slate-800">
+<body>
 
-    <!-- HEADER NAVIGATION UTAMA -->
-    <header class="bg-slate-900 text-white px-5 py-4 shadow-lg flex justify-between items-center sticky top-0 z-50 border-b border-white/5">
-        <div class="flex items-center space-x-3">
-            <!-- Tombol Hamburger (Otomatis muncul HANYA di HP) -->
-            <button onclick="toggleSidebarMenu()" class="lg:hidden p-2 text-xl hover:bg-white/10 rounded-xl transition border border-transparent hover:border-white/10" title="Buka Navigasi">
-                <i class="fa-solid fa-bars-staggered text-indigo-400"></i>
-            </button>
-            <div class="flex items-center space-x-2.5">
-                <div class="bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-2 rounded-xl shadow-md hidden sm:block">
-                    <i class="fa-solid fa-graduation-cap text-lg text-white"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-indigo-100 to-purple-200 bg-clip-text text-transparent">SEKOLAHKU</h1>
-                    <p class="text-[10px] text-indigo-300 font-bold uppercase tracking-widest">SMP Sunan Kalijogo 2 Jabung</p>
-                </div>
-            </div>
+    <!-- TOP HEADER BAR -->
+    <header>
+        <div class="header-title">
+            <h1>SEKOLAHKU</h1>
+            <p>SMP Sunan Kalijogo 2 Jabung</p>
         </div>
-        
-        <!-- Indikator Waktu Realtime & Status Sistem -->
-        <div class="flex items-center space-x-3 text-xs font-bold uppercase tracking-wider">
-            <span id="jam-realtime-modern" class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg hidden md:inline-block font-mono tracking-widest text-indigo-200">00:00:00</span>
-            <div class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1.5 rounded-xl flex items-center gap-2 shadow-inner">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Cloud Aktif
-            </div>
+        <div class="status-badge">
+            <span class="status-dot"></span> Mode Online
         </div>
     </header>
 
-    <!-- CONTAINER BLOCK -->
-    <div class="flex flex-1 relative">
+    <!-- MAIN INTERFACE BODY -->
+    <div class="wrapper">
         
-        <!-- SIDEBAR NAVIGASI (Mewah di Laptop, Otomatis Sembunyi & Menjadi Sidebar Melayang di HP) -->
-        <aside id="sidebar-modern" class="fixed inset-y-0 left-0 w-64 bg-slate-950 text-slate-400 transform -translate-x-full lg:translate-x-0 lg:static flex flex-col justify-between shadow-2xl lg:shadow-none transition-transform duration-300 ease-in-out z-40 pt-20 lg:pt-0 border-r border-slate-900">
-            <div class="flex flex-col px-4 py-6 space-y-6">
-                <div class="text-[10px] font-black uppercase tracking-widest text-slate-500 px-3">Main Menu</div>
-                
-                <nav class="flex flex-col space-y-1 text-xs font-bold uppercase tracking-wide">
-                    <!-- Dashboard Link -->
-                    <button class="px-4 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 text-white shadow-lg shadow-indigo-600/20 text-left flex items-center gap-3 transition-all">
-                        <i class="fa-solid fa-grid-2-space-front text-sm text-indigo-200"></i> DASHBOARD
-                    </button>
-                    <!-- Data Sekolah Link -->
-                    <button class="px-4 py-3.5 rounded-xl hover:bg-slate-900 hover:text-white text-left flex items-center gap-3 transition-all duration-200 group">
-                        <i class="fa-solid fa-school text-sm text-slate-500 group-hover:text-indigo-400 transition"></i> DATA SEKOLAH
-                    </button>
-                    <!-- Absensi KBM Link -->
-                    <button class="px-4 py-3.5 rounded-xl hover:bg-slate-900 hover:text-white text-left flex items-center gap-3 transition-all duration-200 group">
-                        <i class="fa-solid fa-calendar-check text-sm text-slate-500 group-hover:text-emerald-400 transition"></i> ABSENSI KBM
-                    </button>
-                    <!-- Catatan Tatib Link -->
-                    <button class="px-4 py-3.5 rounded-xl hover:bg-slate-900 hover:text-white text-left flex items-center gap-3 transition-all duration-200 group">
-                        <i class="fa-solid fa-clipboard-list text-sm text-slate-500 group-hover:text-amber-400 transition"></i> CATATAN TATIB
-                    </button>
-                    <!-- Penilaian Link -->
-                    <button class="px-4 py-3.5 rounded-xl hover:bg-slate-900 hover:text-white text-left flex items-center gap-3 transition-all duration-200 group">
-                        <i class="fa-solid fa-award text-sm text-slate-500 group-hover:text-rose-400 transition"></i> PENILAIAN
-                    </button>
-                    <!-- Jurnal Guru Link -->
-                    <button class="px-4 py-3.5 rounded-xl hover:bg-slate-900 hover:text-white text-left flex items-center gap-3 transition-all duration-200 group">
-                        <i class="fa-solid fa-book-open text-sm text-slate-500 group-hover:text-violet-400 transition"></i> JURNAL GURU
-                    </button>
-                    <!-- Perangkat Link -->
-                    <button class="px-4 py-3.5 rounded-xl hover:bg-slate-900 hover:text-white text-left flex items-center gap-3 transition-all duration-200 group">
-                        <i class="fa-solid fa-folder-tree text-sm text-slate-500 group-hover:text-cyan-400 transition"></i> PERANGKAT
-                    </button>
-                </nav>
+        <!-- SIDEBAR MENU UTAMA -->
+        <aside>
+            <div class="sidebar-top">
+                <div class="sidebar-title">Navigasi Utama</div>
+                <div class="menu-list">
+                    <button class="menu-btn active">DASHBOARD</button>
+                    <button class="menu-btn">DATA SEKOLAH</button>
+                    <button class="menu-btn">ABSENSI KBM</button>
+                    <button class="menu-btn">CATATAN TATIB</button>
+                    <button class="menu-btn">PENILAIAN</button>
+                    <button class="menu-btn">JURNAL GURU</button>
+                    <button class="menu-btn">PERANGKAT</button>
+                </div>
             </div>
-            
-            <!-- Keluar Aplikasi Button -->
-            <div class="p-4 border-t border-slate-900">
-                <button class="w-full px-4 py-3 bg-slate-900/50 hover:bg-rose-950 text-rose-400 border border-slate-900 hover:border-rose-900/30 rounded-xl text-xs font-bold uppercase tracking-wider transition duration-200 flex items-center gap-3">
-                    <i class="fa-solid fa-power-off text-sm text-rose-500"></i> Keluar Aplikasi
-                </button>
+            <div class="logout-box">
+                <button class="logout-btn">Keluar Aplikasi</button>
             </div>
         </aside>
 
-        <!-- BACKDROP BLUR (Berfungsi menutup menu di HP saat layar disentuh di luar menu) -->
-        <div id="backdrop-modern" onclick="toggleSidebarMenu()" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-30 hidden lg:hidden"></div>
-
-        <!-- AREA UTAMA KANAN (DASHBOARD KONTEN) -->
-        <main class="flex-1 p-5 sm:p-8 overflow-y-auto">
-            
-            <!-- WELCOME TOP CARD -->
-            <div class="bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/10 mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative overflow-hidden">
-                <div class="absolute right-0 top-0 translate-x-10 -translate-y-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
-                <div class="z-10">
-                    <span class="text-[9px] font-extrabold uppercase tracking-widest text-indigo-300 bg-indigo-500/20 border border-indigo-400/20 px-2.5 py-1 rounded-md">Otoritas Terverifikasi</span>
-                    <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight mt-3 uppercase">Selamat Datang, Admin Portal</h2>
-                    <p class="text-xs text-indigo-200 font-medium mt-0.5">Sistem Manajemen Terpadu SMP Sunan Kalijogo 2 Jabung</p>
-                </div>
+        <!-- DASHBOARD WORKSPACE -->
+        <main>
+            <!-- WELCOME GREETING BANNER -->
+            <div class="welcome-card">
+                <span>Akses Terverifikasi</span>
+                <h2>Selamat Datang, Admin Portal</h2>
+                <p>Sistem Integrasi Basis Data SMP Sunan Kalijogo 2 Jabung</p>
             </div>
 
-            <!-- CORE STATS CARD GRID (RESPONSIF FLAT ATAU KOTAK MENGGANTUNG) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- CORE STATS CARD GRID -->
+            <div class="grid-container">
                 
-                <!-- CARD 1: DATA SEKOLAH (BIRU) -->
-                <div class="glass-card kartu-menu rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden flex flex-col justify-between group hover:border-indigo-500 transition-all duration-300 hover-glow hover:-translate-y-0.5">
-                    <div class="p-5 flex justify-between items-center">
-                        <div class="p-3.5 bg-indigo-50 text-indigo-600 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition duration-300 shadow-sm">
-                            <i class="fa-solid fa-hotel text-xl w-6 text-center"></i>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-2xl font-extrabold text-slate-900 tracking-tight">01</p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">Profil Sekolah</p>
+                <!-- CARD 1: DATA SEKOLAH -->
+                <div class="card">
+                    <div class="card-top">
+                        <div class="card-icon icon-blue">🏢</div>
+                        <div class="text-right-data">
+                            <div class="card-value">01</div>
+                            <div class="card-label">Profil Sekolah</div>
                         </div>
                     </div>
-                    <button class="bg-slate-50/50 text-slate-500 hover:bg-indigo-50 hover:text-indigo-700 px-4 py-3 text-xs font-bold border-t border-slate-100 flex justify-between items-center transition">
-                        <span>Akses Detail</span> <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition duration-200"></i>
-                    </button>
+                    <button class="card-action">Akses Detail ➔</button>
                 </div>
 
-                <!-- CARD 2: ROMBEL (EMERALD) -->
+                <!-- CARD 2: ROMBEL -->
+                <div class="card">
+                    <div class="card-top">
+                        <div class="card-icon icon-green">📊</div>
+                        <div class="text-right-data">
+                            <div class="card-value">19</div>
+                            <div class="card-label">Total Rombel</div>
+                        </div>
+                    </div>
+                    <button class="card-action">Akses Detail ➔</button>
+                </div>
+
+                <!-- CARD 3: DATA GURU -->
+                <div class="card">
+                    <div class="card-top">
+                        <div class="card-icon icon-red">👨‍🏫</div>
+                        <div class="text-right-data">
+                            <div class="card-value">42</div>
+                            <div class="card-label">Database Guru</div>
+                        </div>
+                    </div>
+                    <button class="card-action">Akses Detail ➔</button>
+                </div>
+
+                <!-- CARD 4: DATA SISWA -->
+                <div class="card">
+                    <div class="card-top">
+                        <div class="card-icon icon-orange">🎓</div>
+                        <div class="text-right-data">
+                            <div class="card-value">...</div>
+                            <div class="card-label">Siswa Aktif</div>
+                        </div>
+                    </div>
+                    <button class="card-action">Akses Detail ➔</button>
+                </div>
+
+            </div>
+
+            <!-- FOOTER BAR -->
+            <footer>
+                &copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG • ALL RIGHTS RESERVED
