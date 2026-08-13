@@ -19,16 +19,18 @@
         .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; }
         .welcome-card h2 { font-size: 22px; font-weight: 800; }
         .welcome-card p { font-size: 12px; color: #bfdbfe; margin-top: 4px; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
         
-        /* GAYA KARTU INTERAKTIF BISA DIKLIK */
+        /* STRUKTUR KARTU INTERAKTIF */
         .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.3s; }
         .card:hover { transform: translateY(-3px); border-color: #4f46e5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
-        .card-value { font-size: 26px; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
-        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; }
+        .card-icon { font-size: 36px; line-height: 1; padding: 5px; }
+        .card-info { text-align: right; }
+        .card-value { font-size: 26px; font-weight: 800; color: #0f172a; }
+        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
         .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; margin-top: 15px; cursor: pointer; }
         
-        /* PANEL POP-UP MODAL DATA DETIL */
         .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background-color: white; width: 100%; max-width: 600px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .modal-content-wrapper { display: flex; flex-direction: column; width: 100%; }
@@ -66,34 +68,53 @@
                 <p>Sistem Data Sekolah Terintegrasi</p>
             </div>
 
-            <!-- GRID AREA: SETIAP KOTAK DIKUNCI MATI DENGAN SENSOR KLIK (ONCLICK) -->
             <div class="grid-container">
                 
-                <!-- BOX 1: PROFIL SEKOLAH -->
+                <!-- KOTAK 1: PROFIL SEKOLAH (GAMBAR GEDUNG SEKOLAH 🏫) -->
                 <div class="card" onclick="openProfilModal()">
-                    <div class="card-value">01</div>
-                    <div class="card-label">Profil Sekolah</div>
+                    <div class="card-top">
+                        <div class="card-icon">🏫</div>
+                        <div class="card-info">
+                            <div class="card-value">01</div>
+                            <div class="card-label">Profil Sekolah</div>
+                        </div>
+                    </div>
                     <button class="card-action">Akses Detail ➔</button>
                 </div>
                 
-                <!-- BOX 2: TOTAL ROMBEL -->
+                <!-- KOTAK 2: TOTAL ROMBEL (GAMBAR GRAFIK DATA 📊) -->
                 <div class="card" onclick="openRombelModal()">
-                    <div class="card-value" id="box-rombel">19</div>
-                    <div class="card-label">Total Rombel</div>
+                    <div class="card-top">
+                        <div class="card-icon">📊</div>
+                        <div class="card-info">
+                            <div class="card-value" id="box-rombel">19</div>
+                            <div class="card-label">Total Rombel</div>
+                        </div>
+                    </div>
                     <button class="card-action">Akses Detail ➔</button>
                 </div>
                 
-                <!-- BOX 3: DATABASE GURU -->
+                <!-- KOTAK 3: DATABASE GURU (GAMBAR GURU MENGAJAR 👨‍🏫) -->
                 <div class="card" onclick="openGuruModal()">
-                    <div class="card-value" id="box-guru">33</div>
-                    <div class="card-label">Database Guru</div>
+                    <div class="card-top">
+                        <div class="card-icon">👨‍🏫</div>
+                        <div class="card-info">
+                            <div class="card-value" id="box-guru">33</div>
+                            <div class="card-label">Database Guru</div>
+                        </div>
+                    </div>
                     <button class="card-action">Akses Detail ➔</button>
                 </div>
                 
-                <!-- BOX 4: SISWA AKTIF -->
+                <!-- KOTAK 4: SISWA AKTIF (GAMBAR TOPI TOGA 🎓) -->
                 <div class="card" onclick="openSiswaModal()">
-                    <div class="card-value" id="box-siswa">427</div>
-                    <div class="card-label">Siswa Aktif (A/MM)</div>
+                    <div class="card-top">
+                        <div class="card-icon">🎓</div>
+                        <div class="card-info">
+                            <div class="card-value" id="box-siswa">427</div>
+                            <div class="card-label">Siswa Aktif (A/MM)</div>
+                        </div>
+                    </div>
                     <button class="card-action">Akses Detail ➔</button>
                 </div>
                 
@@ -102,7 +123,6 @@
         </main>
     </div>
 
-    <!-- JENDELA POP-UP TERSEMBUNYI -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
             <div class="modal-content-wrapper">
@@ -149,18 +169,3 @@
 
         function openRombelModal() {
             document.getElementById('modalTitle').innerText = "DAFTAR ROMBEL AKTIF";
-            document.getElementById('modalBody').innerHTML = "<p>Data Rombel: 19 Kelas Terdaftar di Database Absensi KBM.</p>";
-            document.getElementById('dataModal').style.display = 'flex';
-        }
-
-        function openGuruModal() {
-            document.getElementById('modalTitle').innerText = "DATABASE GURU & STAF";
-            document.getElementById('modalBody').innerHTML = "<p>Total Terhitung: " + document.getElementById('box-guru').innerText + " Personel aktif terdaftar.</p>";
-            document.getElementById('dataModal').style.display = 'flex';
-        }
-
-        function openSiswaModal() {
-            document.getElementById('modalTitle').innerText = "SISWA AKTIF (A / MM)";
-            let html = "<p style='margin-bottom:10px; color:gray;'>Daftar siswa berstatus aktif (A) & mutasi masuk (MM) dari baris 26 Google Sheets Anda.</p>";
-            if (databaseSekolah.siswaDetail && databaseSekolah.siswaDetail.length > 0) {
-                databaseSekolah.siswaDetail.forEach(s => {
