@@ -1,204 +1,114 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Absensi KBM - SMP Sunan Kalijogo 2 Jabung</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #eef2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .header-card { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; border-radius: 16px; }
-    .card { border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-    .siswa-card { transition: all 0.2s ease; border-left: 4px solid #198754; }
-    .siswa-card:hover { transform: translateY(-2px); }
-    .btn-check:checked + .btn-outline-warning { background-color: #ffc107; color: black; border-color: #ffc107; }
-    .btn-check:checked + .btn-outline-secondary { background-color: #6c757d; color: white; border-color: #6c757d; }
-    .btn-check:checked + .btn-outline-danger { background-color: #dc3545; color: white; border-color: #dc3545; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEKOLAHKU - SMP SUNAN KALIJOGO 2 JABUNG</title>
+    <!-- Framework CSS Tailwind untuk tampilan profesional, bersih, & sangat scannable -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Font Awesome untuk ikon menu utama -->
+    <link rel="stylesheet" href="https://cloudflare.com">
 </head>
-<body class="pb-5">
+<body class="bg-gray-100 min-h-screen font-sans flex flex-col">
 
-<div class="container mt-3 mt-md-4" style="max-width: 650px;">
-  <!-- Header Card -->
-  <div class="card header-card p-3 p-md-4 mb-3 text-center shadow-sm">
-    <div class="d-flex justify-content-center align-items-center gap-2 mb-1">
-      <i class="fa-solid fa-graduation-cap fa-2x"></i>
-      <h4 class="fw-bold mb-0">ABSENSI KBM HARIAN</h4>
-    </div>
-    <p class="mb-0 small opacity-75">SMP Sunan Kalijogo 2 Jabung</p>
-  </div>
-
-  <!-- Form Pengaturan -->
-  <div class="card p-3 p-md-4 mb-3">
-    <div class="mb-3">
-      <label class="form-label fw-bold"><i class="fa-regular fa-calendar me-1"></i> Tanggal KBM</label>
-      <input type="date" id="inputTanggal" class="form-control form-control-lg">
-    </div>
-
-    <div class="mb-2">
-      <label class="form-label fw-bold"><i class="fa-solid fa-users me-1"></i> Pilih Rombel / Kelas</label>
-      <select id="selectRombel" class="form-select form-select-lg" onchange="loadDataSiswa()">
-        <option value="">-- Memuat Rombel... --</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Container List Siswa -->
-  <div id="containerSiswa" class="card p-3 p-md-4 d-none">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h6 class="fw-bold mb-0 text-success" id="labelDaftarSiswa"><i class="fa-solid fa-list-check me-1"></i> Daftar Siswa</h6>
-      <span class="badge bg-success rounded-pill px-3 py-2" id="totalSiswaBadge">0 Siswa</span>
-    </div>
-    
-    <div class="alert alert-success bg-success-subtle border-0 py-2 small mb-3">
-      <i class="fa-solid fa-circle-info me-1"></i> Secara otomatis semua siswa dianggap <b>Hadir (H)</b>. Anda cukup memilih siswa yang <b>Sakit (S)</b>, <b>Izin (I)</b>, atau <b>Alpha (A)</b>.
-    </div>
-
-    <form id="formAbsensi">
-      <div id="listSiswa" class="vstack gap-2"></div>
-
-      <button type="button" class="btn btn-success btn-lg w-100 mt-4 fw-bold py-3 shadow" onclick="kirimAbsensi()">
-        <i class="fa-solid fa-paper-plane me-2"></i>SIMPAN ABSENSI HARIAN
-      </button>
-    </form>
-  </div>
-</div>
-
-<!-- Modal Loading -->
-<div class="modal fade" id="loadingModal" data-bs-backdrop="static" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content text-center p-4 rounded-4 border-0 shadow">
-      <div class="spinner-border text-success mx-auto mb-3" style="width: 3rem; height: 3rem;"></div>
-      <h6 class="fw-bold mb-0 text-secondary" id="loadingText">Memproses...</h6>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbwfyutdpOUnaSJ5MA5hdfluVBB2YtQMvIBBcIyEnAei0HyXzqMu9B3rIhIcPtj89snq/exec";
-
-  const modalLoading = new bootstrap.Modal(document.getElementById('loadingModal'));
-
-  window.onload = function() {
-    document.getElementById('inputTanggal').valueAsDate = new Date();
-    loadRombel();
-  };
-
-  function showLoading(text) {
-    document.getElementById('loadingText').innerText = text;
-    modalLoading.show();
-  }
-
-  function hideLoading() {
-    modalLoading.hide();
-  }
-
-  function loadRombel() {
-    showLoading("Mengambil Data Rombel...");
-    fetch(`${API_URL}?action=getRombel`)
-      .then(res => res.json())
-      .then(data => {
-        hideLoading();
-        const select = document.getElementById('selectRombel');
-        select.innerHTML = '<option value="">-- Pilih Rombel --</option>';
-        data.forEach(r => {
-          select.innerHTML += `<option value="${r}">${r}</option>`;
-        });
-      })
-      .catch(err => {
-        hideLoading();
-        alert("Gagal mengambil data Rombel!");
-      });
-  }
-
-  function loadDataSiswa() {
-    const rombel = document.getElementById('selectRombel').value;
-    if (!rombel) {
-      document.getElementById('containerSiswa').classList.add('d-none');
-      return;
-    }
-
-    showLoading("Mengambil Data Siswa...");
-    fetch(`${API_URL}?action=getSiswa&rombel=${encodeURIComponent(rombel)}`)
-      .then(res => res.json())
-      .then(data => {
-        hideLoading();
-        const listContainer = document.getElementById('listSiswa');
-        listContainer.innerHTML = '';
-        
-        document.getElementById('labelDaftarSiswa').innerText = `Daftar Siswa Kelas ${rombel}`;
-        document.getElementById('totalSiswaBadge').innerText = `${data.length} Siswa`;
-
-        data.forEach((s, idx) => {
-          const rowHtml = `
-            <div class="card p-2 p-md-3 siswa-card d-flex flex-row justify-content-between align-items-center bg-white">
-              <div>
-                <div class="fw-bold text-dark">${idx+1}. ${s.nama}</div>
-                <div class="text-muted small">Induk: ${s.induk} | <span class="badge bg-light text-dark border">${s.pondok}</span></div>
-              </div>
-              <div class="btn-group btn-group-sm" role="group">
-                <input type="radio" class="btn-check" name="ket_${s.nama}" id="s_${idx}" value="S">
-                <label class="btn btn-outline-warning fw-bold px-3" for="s_${idx}">S</label>
-
-                <input type="radio" class="btn-check" name="ket_${s.nama}" id="i_${idx}" value="I">
-                <label class="btn btn-outline-secondary fw-bold px-3" for="i_${idx}">I</label>
-
-                <input type="radio" class="btn-check" name="ket_${s.nama}" id="a_${idx}" value="A">
-                <label class="btn btn-outline-danger fw-bold px-3" for="a_${idx}">A</label>
-              </div>
+    <!-- HEADER UTAMA APLIKASI -->
+    <header class="bg-blue-800 text-white shadow-md p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">SEKOLAHKU</h1>
+                <p class="text-xs text-blue-200">SMP SUNAN KALIJOGO 2 JABUNG</p>
             </div>
-          `;
-          listContainer.innerHTML += rowHtml;
-        });
+            <div class="text-right">
+                <span class="text-sm font-medium bg-blue-700 px-3 py-1 rounded-full border border-blue-500">
+                    <i class="fa-solid fa-user-tie mr-1"></i> Mode Sistem
+                </span>
+            </div>
+        </div>
+    </header>
 
-        document.getElementById('containerSiswa').classList.remove('d-none');
-      })
-      .catch(err => {
-        hideLoading();
-        alert("Gagal mengambil data siswa!");
-      });
-  }
+    <!-- PANEL MENU UTAMA -->
+    <main class="container mx-auto max-w-5xl flex-grow p-6">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">Selamat Datang di Panel Sistem</h2>
+            <p class="text-sm text-gray-600 mt-1">Silakan pilih menu utama di bawah ini untuk memulai pengelolaan data.</p>
+        </div>
 
-  function kirimAbsensi() {
-    const tanggal = document.getElementById('inputTanggal').value;
-    const rombel = document.getElementById('selectRombel').value;
-    const form = document.getElementById('formAbsensi');
-    const formData = new FormData(form);
+        <!-- GRID LAYOUT 6 MENU UTAMA SESUAI SPESIFIKASI -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- 1. DATA SEKOLAH -->
+            <button class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-500 transition duration-300 text-left flex items-start space-x-4 group">
+                <div class="p-4 bg-blue-100 text-blue-700 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-school text-2xl w-8 text-center"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg group-hover:text-blue-700 transition">DATA SEKOLAH</h3>
+                    <p class="text-xs text-gray-500 mt-1">Profil Sekolah, Data Guru & Rombel, Master Data Siswa, & Kalender Pendidikan.</p>
+                </div>
+            </button>
 
-    const ketidakhadiran = {};
-    for (let [key, value] of formData.entries()) {
-      const nama = key.replace('ket_', '');
-      ketidakhadiran[nama] = value;
-    }
+            <!-- 2. ABSENSI -->
+            <button class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-green-500 transition duration-300 text-left flex items-start space-x-4 group">
+                <div class="p-4 bg-green-100 text-green-700 rounded-xl group-hover:bg-green-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg group-hover:text-green-700 transition">ABSENSI</h3>
+                    <p class="text-xs text-gray-500 mt-1">Input absensi harian KBM siswa per rombel & kelola cetak laporan PDF presisi.</p>
+                </div>
+            </button>
 
-    showLoading("Menyimpan Data Absensi...");
+            <!-- 3. CATATAN -->
+            <button class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-amber-500 transition duration-300 text-left flex items-start space-x-4 group">
+                <div class="p-4 bg-amber-100 text-amber-700 rounded-xl group-hover:bg-amber-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-clipboard text-2xl w-8 text-center"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg group-hover:text-amber-700 transition">CATATAN</h3>
+                    <p class="text-xs text-gray-500 mt-1">Pencatatan pelanggaran tatib, poin perkembangan, & catatan khusus siswa.</p>
+                </div>
+            </button>
 
-    fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        tanggal: tanggal,
-        rombel: rombel,
-        ketidakhadiran: ketidakhadiran
-      })
-    })
-    .then(res => res.json())
-    .then(res => {
-      hideLoading();
-      if(res.success) {
-        alert(res.message);
-        document.getElementById('selectRombel').value = '';
-        document.getElementById('containerSiswa').classList.add('d-none');
-      } else {
-        alert("Gagal: " + res.message);
-      }
-    })
-    .catch(err => {
-      hideLoading();
-      alert("Terjadi kesalahan saat menyimpan absensi!");
-    });
-  }
-</script>
+            <!-- 4. PENILAIAN -->
+            <button class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-red-500 transition duration-300 text-left flex items-start space-x-4 group">
+                <div class="p-4 bg-red-100 text-red-700 rounded-xl group-hover:bg-red-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-graduation-cap text-2xl w-8 text-center"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg group-hover:text-red-700 transition">PENILAIAN</h3>
+                    <p class="text-xs text-gray-500 mt-1">Input Nilai Harian, Tugas, PTS, PAS, hingga pengolahan rapor berkala.</p>
+                </div>
+            </button>
+
+            <!-- 5. JURNAL -->
+            <button class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-purple-500 transition duration-300 text-left flex items-start space-x-4 group">
+                <div class="p-4 bg-purple-100 text-purple-700 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-book text-2xl w-8 text-center"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg group-hover:text-purple-700 transition">JURNAL</h3>
+                    <p class="text-xs text-gray-500 mt-1">Rekam jejak materi KBM harian guru, kendala kelas, & agenda mengajar harian.</p>
+                </div>
+            </button>
+
+            <!-- 6. PERANGKAT -->
+            <button class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-teal-500 transition duration-300 text-left flex items-start space-x-4 group">
+                <div class="p-4 bg-teal-100 text-teal-700 rounded-xl group-hover:bg-teal-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-folder-open text-2xl w-8 text-center"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg group-hover:text-teal-700 transition">PERANGKAT</h3>
+                    <p class="text-xs text-gray-500 mt-1">Penyimpanan administrasi guru, silabus, RPP, modul ajar, & kalender akademik.</p>
+                </div>
+            </button>
+
+        </div>
+    </main>
+
+    <!-- FOOTER UTAMA -->
+    <footer class="bg-gray-800 text-gray-400 text-center py-4 text-xs border-t border-gray-700 mt-8">
+        &copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG. Hak Cipta Dilindungi Undang-Undang.
+    </footer>
+
 </body>
 </html>
