@@ -50,6 +50,7 @@
         /* MODAL POP-UP DETAIL DATA */
         .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background-color: white; width: 100%; max-width: 600px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; animation: slideUp 0.3s ease; }
+        .modal-content-wrapper { display: flex; flex-direction: column; width: 100%; }
         .modal-header { background-color: #0f172a; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
         .modal-header h3 { font-size: 16px; font-weight: 800; }
         .close-modal { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; }
@@ -144,18 +145,17 @@
     <!-- POPUP MODAL SCREEN -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Detail Data</h3>
-                <button class="close-modal" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                Memuat data fisik...
+            <div class="modal-content-wrapper">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Detail Data</h3>
+                    <button class="close-modal" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    Memuat data fisik...
+                </div>
             </div>
         </div>
     </div>
 
     <!-- JAVASCRIPT ENGINE -->
     <script>
-        // BARIS 143: GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
-        const WEB_API_URL = "https://script.google.com/macros/s/AKfycbyzTAqrSyf5XYn6WarW4Kb44JgiJhxU56tHE-qBivO4xz9YdgR7yN4JUvORXyogGIP9RQ/exec"; 
-
