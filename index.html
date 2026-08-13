@@ -3,167 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEKOLAHKU - PORTAL UTAMA MODERN</title>
-    <!-- Jaminan Desain Mandiri Tanpa Internet Luar -->
+    <title>SEKOLAHKU - PORTAL INTEGRASI FISIK</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; min-h: screen; display: flex; flex-direction: column; color: #1e293b; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; color: #1e293b; }
         
-        /* HEADER ATAS (NAVIGASI LUAR) */
+        /* NAVIGATION TOP */
         header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 50; }
         .header-title h1 { font-size: 20px; font-weight: 800; tracking: 1px; color: #ffffff; }
         .header-title p { font-size: 11px; color: #a5b4fc; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
-        .status-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); padding: 6px 14px; rounded-radius: 9999px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
-        .status-dot { w: 8px; h: 8px; background-color: #34d399; border-radius: 50%; display: inline-block; }
+        .status-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); padding: 6px 14px; border-radius: 9999px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .status-dot { width: 8px; height: 8px; background-color: #34d399; border-radius: 50%; display: inline-block; }
 
-        /* KONTEN DUA KOLOM (SIDEBAR + ISI UTAMA) */
+        /* BODY CONTAINER */
         .wrapper { display: flex; flex: 1; min-height: calc(100vh - 65px); position: relative; }
         
-        /* SIDEBAR KIRI */
+        /* SIDEBAR GELAP */
         aside { width: 260px; background-color: #0f172a; border-right: 1px solid #1e293b; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 0; }
         .sidebar-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; padding: 0 20px; margin-bottom: 12px; tracking: 1px; }
         .menu-list { display: flex; flex-direction: column; gap: 4px; padding: 0 10px; }
-        .menu-btn { width: 100%; border: none; padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; text-align: left; background: transparent; color: #94a3b8; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; }
+        .menu-btn { width: 100%; border: none; padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; text-align: left; background: transparent; color: #94a3b8; cursor: pointer; transition: all 0.2s ease; }
         .menu-btn:hover { background-color: #1e293b; color: white; }
         .menu-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-        .logout-box { padding: 0 10px; border-top: 1px solid #1e293b; pt: 15px; }
-        .logout-btn { width: 100%; border: 1px solid rgba(244, 63, 94, 0.2); background-color: rgba(244, 63, 94, 0.05); color: #fb7185; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-        .logout-btn:hover { background-color: #e11d48; color: white; }
 
-        /* HALAMAN UTAMA SEBELAH KANAN */
+        /* AREA KONTEN KANAN */
         main { flex: 1; padding: 30px; background-color: #f8fafc; }
-        .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .welcome-card span { font-size: 10px; font-weight: 800; background-color: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; text-transform: uppercase; tracking: 1px; }
-        .welcome-card h2 { font-size: 22px; font-weight: 800; margin-top: 10px; letter-spacing: -0.5px; }
-        .welcome-card p { font-size: 12px; color: #bfdbfe; margin-top: 4px; font-weight: 500; }
+        .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; }
+        .welcome-card span { font-size: 10px; font-weight: 800; background-color: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
+        .welcome-card h2 { font-size: 22px; font-weight: 800; margin-top: 10px; }
+        .welcome-card p { font-size: 12px; color: #bfdbfe; margin-top: 4px; }
 
-        /* GRID KOTAK RINGKASAN DATA */
+        /* GRID DATA KOTAK UTAMA */
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
         .card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0,0,0,0.05); border-color: #4f46e5; }
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .card-icon { width: 44px; h: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .icon-blue { background-color: #eff6ff; color: #2563eb; }
         .icon-green { background-color: #ecfdf5; color: #059669; }
         .icon-red { background-color: #fff1f2; color: #e11d48; }
         .icon-orange { background-color: #fffbeb; color: #d97706; }
         .card-value { font-size: 24px; font-weight: 800; color: #0f172a; }
-        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
-        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-        .card-action:hover { color: #3730a3; }
+        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; cursor: pointer; margin-top: 15px; }
 
-        /* FOOTER */
-        footer { border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 40px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; tracking: 1px; }
-
-        /* PENGATURAN LAYAR HP (OTOMATIS RESPONSIF) */
-        @media (max-width: 768px) {
-            .wrapper { flex-direction: column; }
-            aside { width: 100%; min-height: auto; padding: 15px 0; border-right: none; border-bottom: 1px solid #1e293b; }
-            .sidebar-title { display: none; }
-            .menu-list { flex-direction: row; overflow-x: auto; padding: 0 15px; gap: 8px; }
-            .menu-btn { width: auto; white-space: nowrap; padding: 10px 14px; }
-            .logout-box { display: none; }
-            main { padding: 20px; }
-        }
+        /* MODAL POP-UP DETAIL DATA */
+        .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background-color: white; width: 100%; max-width: 600px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden; animation: slideUp 0.3s ease; }
+        .modal-header { background-color: #0f172a; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 16px; font-weight: 800; }
+        .close-modal { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; }
+        .close-modal:hover { color: white; }
+        .modal-body { padding: 24px; max-height: 400px; overflow-y: auto; font-size: 13px; }
+        .detail-row { display: flex; border-b: 1px solid #f1f5f9; padding: 10px 0; justify-content: space-between; }
+        .detail-label { font-weight: 700; color: #64748b; }
+        
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @media (max-width: 768px) { .wrapper { flex-direction: column; } aside { width: 100%; padding: 15px 0; } .menu-list { flex-direction: row; overflow-x: auto; } }
     </style>
 </head>
 <body>
 
-    <!-- TOP HEADER BAR -->
     <header>
         <div class="header-title">
-            <h1>SEKOLAHKU</h1>
-            <p>SMP Sunan Kalijogo 2 Jabung</p>
+            <h1 id="top-school-name">SEKOLAHKU</h1>
+            <p id="top-school-sub">SMP Sunan Kalijogo 2 Jabung</p>
         </div>
-        <div class="status-badge">
-            <span class="status-dot"></span> Mode Online
-        </div>
+        <div class="status-badge"><span class="status-dot"></span> Mode Online</div>
     </header>
 
-    <!-- MAIN INTERFACE BODY -->
     <div class="wrapper">
-        
-        <!-- SIDEBAR MENU UTAMA -->
         <aside>
-            <div class="sidebar-top">
-                <div class="sidebar-title">Navigasi Utama</div>
-                <div class="menu-list">
-                    <button class="menu-btn active">DASHBOARD</button>
-                    <button class="menu-btn">DATA SEKOLAH</button>
-                    <button class="menu-btn">ABSENSI KBM</button>
-                    <button class="menu-btn">CATATAN TATIB</button>
-                    <button class="menu-btn">PENILAIAN</button>
-                    <button class="menu-btn">JURNAL GURU</button>
-                    <button class="menu-btn">PERANGKAT</button>
-                </div>
-            </div>
-            <div class="logout-box">
-                <button class="logout-btn">Keluar Aplikasi</button>
+            <div class="menu-list">
+                <button class="menu-btn active">DASHBOARD</button>
+                <button class="menu-btn" onclick="openProfilModal()">DATA SEKOLAH</button>
+                <button class="menu-btn">ABSENSI KBM</button>
+                <button class="menu-btn">CATATAN TATIB</button>
+                <button class="menu-btn">PENILAIAN</button>
+                <button class="menu-btn">JURNAL GURU</button>
+                <button class="menu-btn">PERANGKAT</button>
             </div>
         </aside>
 
-        <!-- DASHBOARD WORKSPACE -->
         <main>
-            <!-- WELCOME GREETING BANNER -->
             <div class="welcome-card">
                 <span>Akses Terverifikasi</span>
-                <h2>Selamat Datang, Admin Portal</h2>
+                <h2 id="welcome-title">Selamat Datang, Admin Portal</h2>
                 <p>Sistem Integrasi Basis Data SMP Sunan Kalijogo 2 Jabung</p>
             </div>
 
-            <!-- CORE STATS CARD GRID -->
             <div class="grid-container">
-                
-                <!-- CARD 1: DATA SEKOLAH -->
-                <div class="card">
+                <!-- BOX 1 -->
+                <div class="card" onclick="openProfilModal()">
                     <div class="card-top">
                         <div class="card-icon icon-blue">🏢</div>
-                        <div class="text-right-data">
-                            <div class="card-value">01</div>
+                        <div>
+                            <div class="card-value" id="box-profil">Loading...</div>
                             <div class="card-label">Profil Sekolah</div>
                         </div>
                     </div>
-                    <button class="card-action">Akses Detail ➔</button>
+                    <button class="card-action">Klik Detail ➔</button>
                 </div>
-
-                <!-- CARD 2: ROMBEL -->
-                <div class="card">
+                <!-- BOX 2 -->
+                <div class="card" onclick="openRombelModal()">
                     <div class="card-top">
                         <div class="card-icon icon-green">📊</div>
-                        <div class="text-right-data">
-                            <div class="card-value">19</div>
+                        <div>
+                            <div class="card-value" id="box-rombel">Loading...</div>
                             <div class="card-label">Total Rombel</div>
                         </div>
                     </div>
-                    <button class="card-action">Akses Detail ➔</button>
+                    <button class="card-action">Klik Detail ➔</button>
                 </div>
-
-                <!-- CARD 3: DATA GURU -->
-                <div class="card">
+                <!-- BOX 3 -->
+                <div class="card" onclick="openGuruModal()">
                     <div class="card-top">
                         <div class="card-icon icon-red">👨‍🏫</div>
-                        <div class="text-right-data">
-                            <div class="card-value">42</div>
+                        <div>
+                            <div class="card-value" id="box-guru">Loading...</div>
                             <div class="card-label">Database Guru</div>
                         </div>
                     </div>
-                    <button class="card-action">Akses Detail ➔</button>
+                    <button class="card-action">Klik Detail ➔</button>
                 </div>
-
-                <!-- CARD 4: DATA SISWA -->
-                <div class="card">
+                <!-- BOX 4 -->
+                <div class="card" onclick="openSiswaModal()">
                     <div class="card-top">
                         <div class="card-icon icon-orange">🎓</div>
-                        <div class="text-right-data">
-                            <div class="card-value">...</div>
-                            <div class="card-label">Siswa Aktif</div>
+                        <div>
+                            <div class="card-value" id="box-siswa">Loading...</div>
+                            <div class="card-label">Siswa Aktif (A/MM)</div>
                         </div>
                     </div>
-                    <button class="card-action">Akses Detail ➔</button>
+                    <button class="card-action">Klik Detail ➔</button>
                 </div>
-
             </div>
+        </main>
+    </div>
 
-            <!-- FOOTER BAR -->
-            <footer>
-                &copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG • ALL RIGHTS RESERVED
+    <!-- POPUP MODAL SCREEN -->
+    <div id="dataModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Detail Data</h3>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                Memuat data fisik...
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE UNTUK HITUNG OTOMATIS DARI GOOGLE SHEET API -->
+    <script>
+        // GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA (YANG BERUJUNG /exec)
+        const WEB_API_URL = "https://google.com"; 
+
