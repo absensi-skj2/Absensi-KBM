@@ -35,7 +35,7 @@
 
         /* GRID DATA KOTAK UTAMA */
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
+        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; cursor: pointer; }
         .card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(0,0,0,0.05); border-color: #4f46e5; }
         .card-top { display: flex; justify-content: space-between; align-items: center; }
         .card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
@@ -45,7 +45,7 @@
         .icon-orange { background-color: #fffbeb; color: #d97706; }
         .card-value { font-size: 24px; font-weight: 800; color: #0f172a; }
         .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
-        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; cursor: pointer; margin-top: 15px; }
+        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; margin-top: 15px; }
 
         /* MODAL POP-UP DETAIL DATA */
         .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
@@ -55,7 +55,7 @@
         .close-modal { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; }
         .close-modal:hover { color: white; }
         .modal-body { padding: 24px; max-height: 400px; overflow-y: auto; font-size: 13px; }
-        .detail-row { display: flex; border-b: 1px solid #f1f5f9; padding: 10px 0; justify-content: space-between; }
+        .detail-row { display: flex; border-bottom: 1px solid #f1f5f9; padding: 10px 0; justify-content: space-between; }
         .detail-label { font-weight: 700; color: #64748b; }
         
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -93,7 +93,7 @@
             </div>
 
             <div class="grid-container">
-                <!-- BOX 1 -->
+                <!-- BOX 1: PROFIL -->
                 <div class="card" onclick="openProfilModal()">
                     <div class="card-top">
                         <div class="card-icon icon-blue">🏢</div>
@@ -104,7 +104,7 @@
                     </div>
                     <button class="card-action">Klik Detail ➔</button>
                 </div>
-                <!-- BOX 2 -->
+                <!-- BOX 2: ROMBEL -->
                 <div class="card" onclick="openRombelModal()">
                     <div class="card-top">
                         <div class="card-icon icon-green">📊</div>
@@ -115,7 +115,7 @@
                     </div>
                     <button class="card-action">Klik Detail ➔</button>
                 </div>
-                <!-- BOX 3 -->
+                <!-- BOX 3: GURU -->
                 <div class="card" onclick="openGuruModal()">
                     <div class="card-top">
                         <div class="card-icon icon-red">👨‍🏫</div>
@@ -126,7 +126,7 @@
                     </div>
                     <button class="card-action">Klik Detail ➔</button>
                 </div>
-                <!-- BOX 4 -->
+                <!-- BOX 4: SISWA -->
                 <div class="card" onclick="openSiswaModal()">
                     <div class="card-top">
                         <div class="card-icon icon-orange">🎓</div>
@@ -154,8 +154,8 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT ENGINE UNTUK HITUNG OTOMATIS DARI GOOGLE SHEET API -->
+    <!-- JAVASCRIPT ENGINE -->
     <script>
-        // GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA (YANG BERUJUNG /exec)
+        // BARIS 143: GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
         const WEB_API_URL = "https://google.com"; 
 
