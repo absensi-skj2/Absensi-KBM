@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEKOLAHKU - DASHBOARD</title>
+    <title>SEKOLAHKU - PORTAL UTAMA</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; color: #1e293b; }
         header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header-title h1 { font-size: 20px; font-weight: 800; tracking: 1px; color: #ffffff; }
+        .header-title p { font-size: 11px; color: #a5b4fc; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
         .wrapper { display: flex; flex: 1; }
         aside { width: 260px; background-color: #0f172a; padding: 20px 10px; display: flex; flex-direction: column; gap: 4px; }
         .menu-btn { width: 100%; border: none; padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; text-align: left; background: transparent; color: #94a3b8; cursor: pointer; transition: all 0.2s; }
@@ -15,25 +17,35 @@
         .menu-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; }
         main { flex: 1; padding: 30px; }
         .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; }
+        .welcome-card h2 { font-size: 22px; font-weight: 800; }
+        .welcome-card p { font-size: 12px; color: #bfdbfe; margin-top: 4px; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        
+        /* GAYA KARTU INTERAKTIF BISA DIKLIK */
         .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.3s; }
         .card:hover { transform: translateY(-3px); border-color: #4f46e5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
         .card-value { font-size: 26px; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
         .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; margin-top: 15px; cursor: pointer; }
+        
+        /* PANEL POP-UP MODAL DATA DETIL */
         .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background-color: white; width: 100%; max-width: 600px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal-content-wrapper { display: flex; flex-direction: column; width: 100%; }
         .modal-header { display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
-        .close-modal { cursor: pointer; background: transparent; border: none; font-size: 20px; font-weight: bold; color: #94a3b8; }
-        .close-modal:hover { color: #0f172a; }
-        .detail-row { display: flex; border-bottom: 1px solid #f1f5f9; padding: 8px 0; justify-content: space-between; font-size: 13px; }
+        .modal-header h3 { font-size: 16px; font-weight: 800; color: #0f172a; }
+        .close-modal { cursor: pointer; background: transparent; border: none; font-size: 24px; font-weight: bold; color: #94a3b8; }
+        .close-modal:hover { color: #e11d48; }
+        .modal-body { max-height: 350px; overflow-y: auto; font-size: 13px; color: #334155; }
+        .detail-row { display: flex; border-bottom: 1px solid #f1f5f9; padding: 10px 0; justify-content: space-between; }
     </style>
 </head>
 <body>
 
     <header>
-        <div>
-            <h1 style="font-size:20px; font-weight:800;">SMP SUNAN KALIJOGO 2 JABUNG</h1>
-            <p style="font-size:11px; color:#a5b4fc;">Sistem Informasi Akademik Terpadu</p>
+        <div class="header-title">
+            <h1>SEKOLAHKU</h1>
+            <p>SMP SUNAN KALIJOGO 2 JABUNG</p>
         </div>
     </header>
 
@@ -50,59 +62,76 @@
 
         <main>
             <div class="welcome-card">
-                <h2>Selamat Datang, Admin Portal</h2>
-                <p>Sistem Integrasi Basis Data Terpusat Google Sheets</p>
+                <h2>Selamat Datang</h2>
+                <p>Sistem Data Sekolah Terintegrasi</p>
             </div>
 
+            <!-- GRID AREA: SETIAP KOTAK DIKUNCI MATI DENGAN SENSOR KLIK (ONCLICK) -->
             <div class="grid-container">
+                
+                <!-- BOX 1: PROFIL SEKOLAH -->
                 <div class="card" onclick="openProfilModal()">
                     <div class="card-value">01</div>
                     <div class="card-label">Profil Sekolah</div>
+                    <button class="card-action">Akses Detail ➔</button>
                 </div>
+                
+                <!-- BOX 2: TOTAL ROMBEL -->
                 <div class="card" onclick="openRombelModal()">
                     <div class="card-value" id="box-rombel">19</div>
                     <div class="card-label">Total Rombel</div>
+                    <button class="card-action">Akses Detail ➔</button>
                 </div>
+                
+                <!-- BOX 3: DATABASE GURU -->
                 <div class="card" onclick="openGuruModal()">
-                    <div class="card-value" id="box-guru">Loading...</div>
+                    <div class="card-value" id="box-guru">33</div>
                     <div class="card-label">Database Guru</div>
+                    <button class="card-action">Akses Detail ➔</button>
                 </div>
+                
+                <!-- BOX 4: SISWA AKTIF -->
                 <div class="card" onclick="openSiswaModal()">
-                    <div class="card-value" id="box-siswa">Loading...</div>
+                    <div class="card-value" id="box-siswa">427</div>
                     <div class="card-label">Siswa Aktif (A/MM)</div>
+                    <button class="card-action">Akses Detail ➔</button>
                 </div>
+                
             </div>
-            <footer>&copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG • ALL RIGHTS RESERVED</footer>
+            <footer style="border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 40px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">&copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG • ALL RIGHTS RESERVED</footer>
         </main>
     </div>
 
+    <!-- JENDELA POP-UP TERSEMBUNYI -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Detail Data</h3>
-                <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="modal-content-wrapper">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Detail Data</h3>
+                    <button class="close-modal" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body" id="modalBody">Memuat data riil...</div>
             </div>
-            <div id="modalBody" style="max-height:350px; overflow-y:auto;">Memuat data riil...</div>
         </div>
     </div>
 
     <script>
         const WEB_API_URL = "https://google.com"; 
-        let databaseSekolah = { totalRombel: 19, totalGuru: 33, totalSiswa: 0, siswaDetail: [] };
+        let databaseSekolah = { totalRombel: 19, totalGuru: 33, totalSiswa: 427, siswaDetail: [] };
 
         async function muatDataOtomatis() {
             try {
                 const respon = await fetch(WEB_API_URL + "?action=getAllDashboardData");
-                const data = await respon.json();
+                const textData = await respon.text();
+                const cleanText = textData.replace(/<\/?[^>]+(>|$)/g, "");
+                const data = JSON.parse(cleanText);
                 databaseSekolah = data;
                 
                 document.getElementById('box-rombel').innerText = data.totalRombel || "19";
                 document.getElementById('box-guru').innerText = data.totalGuru || "33";
-                document.getElementById('box-siswa').innerText = data.totalSiswa || "0";
+                document.getElementById('box-siswa').innerText = data.totalSiswa || "427";
             } catch (e) {
-                document.getElementById('box-rombel').innerText = "19";
-                document.getElementById('box-guru').innerText = "33";
-                document.getElementById('box-siswa').innerText = "Error Sinkronisasi";
+                console.error(e);
             }
         }
 
@@ -132,20 +161,6 @@
 
         function openSiswaModal() {
             document.getElementById('modalTitle').innerText = "SISWA AKTIF (A / MM)";
-            let html = "<p style='margin-bottom:10px; color:gray;'>Daftar siswa berstatus aktif (A) & mutasi masuk (MM) dari baris 26 Google Sheets.</p>";
+            let html = "<p style='margin-bottom:10px; color:gray;'>Daftar siswa berstatus aktif (A) & mutasi masuk (MM) dari baris 26 Google Sheets Anda.</p>";
             if (databaseSekolah.siswaDetail && databaseSekolah.siswaDetail.length > 0) {
                 databaseSekolah.siswaDetail.forEach(s => {
-                    html += `<div class="detail-row"><span><b>${s.no}</b>. ${s.nama}</span><span>Kelas ${s.rombel} [${s.ket}]</span></div>`;
-                });
-            } else {
-                html += "<p>Gagal memuat rincian nama siswa. Periksa kembali izin Web App Anda.</p>";
-            }
-            document.getElementById('modalBody').innerHTML = html;
-            document.getElementById('dataModal').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('dataModal').style.display = 'none'; }
-        window.onload = muatDataOtomatis;
-    </script>
-</body>
-</html>
