@@ -1,76 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEKOLAHKU - DASHBOARD</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; color: #1e293b; }
+        header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .wrapper { display: flex; flex: 1; }
+        aside { width: 260px; background-color: #0f172a; padding: 20px 10px; display: flex; flex-direction: column; gap: 4px; }
+        .menu-btn { width: 100%; border: none; padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; text-align: left; background: transparent; color: #94a3b8; cursor: pointer; transition: all 0.2s; }
+        .menu-btn:hover { background-color: #1e293b; color: white; }
+        .menu-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; }
+        main { flex: 1; padding: 30px; }
+        .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.3s; }
+        .card:hover { transform: translateY(-3px); border-color: #4f46e5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .card-value { font-size: 26px; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
+        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+        .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background-color: white; width: 100%; max-width: 600px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal-header { display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+        .close-modal { cursor: pointer; background: transparent; border: none; font-size: 20px; font-weight: bold; color: #94a3b8; }
+        .close-modal:hover { color: #0f172a; }
+        .detail-row { display: flex; border-bottom: 1px solid #f1f5f9; padding: 8px 0; justify-content: space-between; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1 style="font-size:20px; font-weight:800;">SMP SUNAN KALIJOGO 2 JABUNG</h1>
+            <p style="font-size:11px; color:#a5b4fc;">Sistem Informasi Akademik Terpadu</p>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <aside>
+            <button class="menu-btn active">DASHBOARD</button>
+            <button class="menu-btn" onclick="openProfilModal()">DATA SEKOLAH</button>
+            <button class="menu-btn">ABSENSI KBM</button>
+            <button class="menu-btn">CATATAN TATIB</button>
+            <button class="menu-btn">PENILAIAN</button>
+            <button class="menu-btn">JURNAL GURU</button>
+            <button class="menu-btn">PERANGKAT</button>
+        </aside>
+
+        <main>
+            <div class="welcome-card">
+                <h2>Selamat Datang, Admin Portal</h2>
+                <p>Sistem Integrasi Basis Data Terpusat Google Sheets</p>
+            </div>
+
+            <div class="grid-container">
+                <div class="card" onclick="openProfilModal()">
+                    <div class="card-value">01</div>
+                    <div class="card-label">Profil Sekolah</div>
+                </div>
+                <div class="card" onclick="openRombelModal()">
+                    <div class="card-value" id="box-rombel">19</div>
+                    <div class="card-label">Total Rombel</div>
+                </div>
+                <div class="card" onclick="openGuruModal()">
+                    <div class="card-value" id="box-guru">Loading...</div>
+                    <div class="card-label">Database Guru</div>
+                </div>
+                <div class="card" onclick="openSiswaModal()">
+                    <div class="card-value" id="box-siswa">Loading...</div>
+                    <div class="card-label">Siswa Aktif (A/MM)</div>
+                </div>
+            </div>
+            <footer>&copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG • ALL RIGHTS RESERVED</footer>
+        </main>
+    </div>
+
+    <div id="dataModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Detail Data</h3>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div id="modalBody" style="max-height:350px; overflow-y:auto;">Memuat data riil...</div>
+        </div>
+    </div>
+
+    <script>
         const WEB_API_URL = "https://google.com"; 
-        let databaseSekolah = { profil: {}, rombel: [], guru: [], siswa: [] };
+        let databaseSekolah = { totalRombel: 19, totalGuru: 33, totalSiswa: 0, siswaDetail: [] };
+
         async function muatDataOtomatis() {
             try {
                 const respon = await fetch(WEB_API_URL + "?action=getAllDashboardData");
                 const data = await respon.json();
                 databaseSekolah = data;
-                document.getElementById('box-profil').innerText = "01";
-                document.getElementById('box-rombel').innerText = data.rombel ? data.rombel.length : "0";
-                document.getElementById('box-guru').innerText = data.guru ? data.guru.length : "0";
-                document.getElementById('box-siswa').innerText = data.siswa ? data.siswa.length : "0";
-                if(data.profil && data.profil.namaSekolah) {
-                    document.getElementById('top-school-name').innerText = data.profil.namaSekolah;
-                    document.getElementById('top-school-sub').innerText = data.profil.tahunPelajaran || "2026/2027";
-                    document.getElementById('welcome-title').innerText = "Selamat Datang di Portal " + data.profil.namaSekolah;
-                }
+                
+                document.getElementById('box-rombel').innerText = data.totalRombel || "19";
+                document.getElementById('box-guru').innerText = data.totalGuru || "33";
+                document.getElementById('box-siswa').innerText = data.totalSiswa || "0";
             } catch (e) {
-                console.error("Gagal: ", e);
-                document.getElementById('box-profil').innerText = "01";
                 document.getElementById('box-rombel').innerText = "19";
-                document.getElementById('box-guru').innerText = "0";
-                document.getElementById('box-siswa').innerText = "0";
+                document.getElementById('box-guru').innerText = "33";
+                document.getElementById('box-siswa').innerText = "Error Sinkronisasi";
             }
         }
+
         function openProfilModal() {
             document.getElementById('modalTitle').innerText = "PROFIL SEKOLAH MASTER";
-            let p = databaseSekolah.profil || {};
             document.getElementById('modalBody').innerHTML = `
-                <div class="detail-row"><span class="detail-label">Nama Sekolah</span><span>${p.namaSekolah || 'SMP SUNAN KALIJOGO 2 JABUNG'}</span></div>
-                <div class="detail-row"><span class="detail-label">Tahun Pelajaran</span><span>${p.tahunPelajaran || '2026/2027'}</span></div>
-                <div class="detail-row"><span class="detail-label">Kepala Sekolah</span><span>${p.kepalaSekolah || 'MUHAMMAD MULYONO, S.E'}</span></div>
-                <div class="detail-row"><span class="detail-label">Tatib Sekolah</span><span>${p.tatib || 'SITI FATHONAH, S.Si'}</span></div>
-                <div class="detail-row"><span class="detail-label">Lokasi/Tempat</span><span>${p.tempat || 'Jabung'}</span></div>
+                <div class="detail-row"><b>Nama Sekolah</b><span>SMP SUNAN KALIJOGO 2 JABUNG</span></div>
+                <div class="detail-row"><b>Tahun Pelajaran</b><span>2026/2027</span></div>
+                <div class="detail-row"><b>Kepala Sekolah</b><span>MUHAMMAD MULYONO, S.E</span></div>
+                <div class="detail-row"><b>Tatib Sekolah</b><span>SITI FATHONAH, S.Si</span></div>
+                <div class="detail-row"><b>Lokasi/Tempat</b><span>Jabung</span></div>
             `;
             document.getElementById('dataModal').style.display = 'flex';
         }
+
         function openRombelModal() {
-            document.getElementById('modalTitle').innerText = "DAFTAR ROMBEL AKTIF (" + (databaseSekolah.rombel ? databaseSekolah.rombel.length : 0) + ")";
-            let html = "";
-            if(!databaseSekolah.rombel || databaseSekbell.rombel.length === 0) html = "<p>Kosong</p>";
-            else {
-                databaseSekolah.rombel.forEach(r => {
-                    html += `<div class="detail-row"><span class="detail-label">Kelas ${r.rombel || '-'}</span><span>Wali: ${r.wali || '-'}</span></div>`;
-                });
-            }
-            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('modalTitle').innerText = "DAFTAR ROMBEL AKTIF";
+            document.getElementById('modalBody').innerHTML = "<p>Data Rombel: 19 Kelas Terdaftar di Database Absensi KBM.</p>";
             document.getElementById('dataModal').style.display = 'flex';
         }
+
         function openGuruModal() {
-            document.getElementById('modalTitle').innerText = "DATABASE GURU (" + (databaseSekolah.guru ? databaseSekolah.guru.length : 0) + ")";
-            let html = "";
-            if(!databaseSekolah.guru || databaseSekolah.guru.length === 0) html = "<p>Kosong</p>";
-            else {
-                databaseSekolah.guru.forEach(g => {
-                    html += `<div class="detail-row"><span class="detail-label">${g.nama || '-'}</span><span>Rombel Wali: ${g.rombel || '-'}</span></div>`;
-                });
-            }
-            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('modalTitle').innerText = "DATABASE GURU & STAF";
+            document.getElementById('modalBody').innerHTML = "<p>Total Terhitung: " + document.getElementById('box-guru').innerText + " Personel aktif terdaftar.</p>";
             document.getElementById('dataModal').style.display = 'flex';
         }
+
         function openSiswaModal() {
-            const totalSiswa = databaseSekolah.siswa ? databaseSekolah.siswa.length : 0;
-            document.getElementById('modalTitle').innerText = "SISWA AKTIF - TOTAL: " + totalSiswa;
-            let html = '';
-            if(!databaseSekolah.siswa || databaseSekolah.siswa.length === 0) html += "<p>Kosong</p>";
-            else {
-                databaseSekolah.siswa.forEach(s => {
-                    html += `<div class="detail-row"><span><b>${s.no || '-'}</b>. ${s.nama || '-'}</span><span>Kelas ${s.rombel || '-'}</span></div>`;
+            document.getElementById('modalTitle').innerText = "SISWA AKTIF (A / MM)";
+            let html = "<p style='margin-bottom:10px; color:gray;'>Daftar siswa berstatus aktif (A) & mutasi masuk (MM) dari baris 26 Google Sheets.</p>";
+            if (databaseSekolah.siswaDetail && databaseSekolah.siswaDetail.length > 0) {
+                databaseSekolah.siswaDetail.forEach(s => {
+                    html += `<div class="detail-row"><span><b>${s.no}</b>. ${s.nama}</span><span>Kelas ${s.rombel} [${s.ket}]</span></div>`;
                 });
+            } else {
+                html += "<p>Gagal memuat rincian nama siswa. Periksa kembali izin Web App Anda.</p>";
             }
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('dataModal').style.display = 'flex';
         }
+
         function closeModal() { document.getElementById('dataModal').style.display = 'none'; }
         window.onload = muatDataOtomatis;
     </script>
