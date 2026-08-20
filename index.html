@@ -691,8 +691,72 @@ function setStatus(index, status) {
 // ============================================
 // FUNGSI: SAVE ABSENSI
 // ============================================
-function saveAbsensi() {
-    showToast('Fitur simpan akan terhubung ke Google Sheets', 'info');
+// ============================================
+// FUNGSI: SAVE ABSENSI (TERHUBUNG KE GOOGLE SHEETS)
+// ============================================
+async function saveAbsensi() {
+    const tanggal = document.getElementById('absensiDate').value;
+    const rombel = document.getElementById('absensiRombel').value;
+    
+    if (!tanggal || !rombel) {
+        showToast('Pilih tanggal dan rombel!', 'error');
+        return;
+    }
+    
+    // Kumpulkan data siswa
+    const siswaData = [];
+    const rows = document.querySelectorAll('#absensiList tbody tr');
+    
+    rows.forEach((row, index) => {
+        const sBtn = document.getElementById(`btn-${index}-S`);
+        const iBtn = document.getElementById(`btn-${index}-I`);
+        const aBtn = document.getElementById(`btn-${index}-A`);
+        
+        let status = 'H'; // Default Hadir
+        if (sBtn && sBtn.classList.contains('active-s')) status = 'S';
+        else if (iBtn && iBtn.classList.contains('active-i')) status = 'I';
+        else if (aBtn && aBtn.classList.contains('active-a')) status = 'A';
+        
+        siswaData.push({
+            rowIndex: index,
+            status: status
+        });
+    });
+    
+    if (siswaData.length === 0) {
+        showToast('Tidak ada data siswa!', 'error');
+        return;
+    }
+    
+    // Kirim ke Google Sheets
+    try {
+        showLoading(true);
+        const response = await fetch(CONFIG.API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: 'saveAbsensi',
+                tanggal: tanggal,
+                rombel: rombel,
+                data: siswaData
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('✅ ' + result.message, 'success');
+            resetAbsensi();
+        } else {
+            showToast('❌ Gagal: ' + (result.error || 'Unknown error'), 'error');
+        }
+    } catch (error) {
+        showToast('❌ Error: ' + error.message, 'error');
+    } finally {
+        showLoading(false);
+    }
 }
 
 // ============================================
