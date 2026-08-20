@@ -536,10 +536,21 @@ function renderDataSekolah(container) {
 }
 
 // ============================================
-// RENDER: ABSENSI
+// RENDER: ABSENSI (DIPERBAIKI)
 // ============================================
 function renderAbsensi(container) {
-    const { rombel } = appData;
+    // Ambil data rombel dari appData
+    const rombel = appData.rombel || [];
+    
+    // Buat opsi dropdown
+    let optionsHtml = '<option value="">Pilih Rombel</option>';
+    if (rombel.length > 0) {
+        rombel.forEach(r => {
+            optionsHtml += `<option value="${r.rombel}">${r.rombel} - ${r.wali || ''}</option>`;
+        });
+    } else {
+        optionsHtml += '<option value="">Belum ada data rombel</option>';
+    }
     
     let html = `
         <div class="grid-2">
@@ -556,16 +567,7 @@ function renderAbsensi(container) {
                     <div>
                         <label style="font-weight:600;font-size:14px;display:block;margin-bottom:4px;">🏫 Rombel</label>
                         <select id="absensiRombel">
-                            <option value="">Pilih Rombel</option>
-    `;
-    
-    if (rombel && rombel.length > 0) {
-        rombel.forEach(r => {
-            html += `<option value="${r.rombel}">${r.rombel} - ${r.wali || ''}</option>`;
-        });
-    }
-    
-    html += `
+                            ${optionsHtml}
                         </select>
                     </div>
                     <button class="btn-primary" onclick="loadAbsensi()">
