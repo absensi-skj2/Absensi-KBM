@@ -3,169 +3,740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEKOLAHKU - PORTAL UTAMA</title>
+    <title>Sekolahku - Aplikasi Manajemen Sekolah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; color: #1e293b; }
-        header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .header-title h1 { font-size: 20px; font-weight: 800; tracking: 1px; color: #ffffff; }
-        .header-title p { font-size: 11px; color: #a5b4fc; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
-        .wrapper { display: flex; flex: 1; }
-        aside { width: 260px; background-color: #0f172a; padding: 20px 10px; display: flex; flex-direction: column; gap: 4px; }
-        .menu-btn { width: 100%; border: none; padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; text-align: left; background: transparent; color: #94a3b8; cursor: pointer; transition: all 0.2s; }
-        .menu-btn:hover { background-color: #1e293b; color: white; }
-        .menu-btn.active { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; }
-        main { flex: 1; padding: 30px; }
-        .welcome-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); padding: 24px; border-radius: 20px; color: white; margin-bottom: 24px; }
-        .welcome-card h2 { font-size: 22px; font-weight: 800; }
-        .welcome-card p { font-size: 12px; color: #bfdbfe; margin-top: 4px; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        
-        /* STRUKTUR KARTU INTERAKTIF */
-        .card { background-color: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.3s; }
-        .card:hover { transform: translateY(-3px); border-color: #4f46e5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; }
-        .card-icon { font-size: 36px; line-height: 1; padding: 5px; }
-        .card-info { text-align: right; }
-        .card-value { font-size: 26px; font-weight: 800; color: #0f172a; }
-        .card-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
-        .card-action { width: 100%; border: none; border-top: 1px solid #f1f5f9; padding-top: 12px; background: transparent; color: #4f46e5; font-size: 11px; font-weight: 700; text-align: left; margin-top: 15px; cursor: pointer; }
-        
-        .modal { display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background-color: white; width: 100%; max-width: 600px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .modal-content-wrapper { display: flex; flex-direction: column; width: 100%; }
-        .modal-header { display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
-        .modal-header h3 { font-size: 16px; font-weight: 800; color: #0f172a; }
-        .close-modal { cursor: pointer; background: transparent; border: none; font-size: 24px; font-weight: bold; color: #94a3b8; }
-        .close-modal:hover { color: #e11d48; }
-        .modal-body { max-height: 350px; overflow-y: auto; font-size: 13px; color: #334155; }
-        .detail-row { display: flex; border-bottom: 1px solid #f1f5f9; padding: 10px 0; justify-content: space-between; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f1f5f9;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --radius: 16px;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: var(--white);
+            padding: 16px 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-brand i { font-size: 28px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px 32px;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+        .hero p { opacity: 0.9; font-size: 16px; }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .menu-card {
+            background: var(--white);
+            padding: 24px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid transparent;
+        }
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(37,99,235,0.25);
+            border-color: var(--primary);
+        }
+        .menu-card i {
+            font-size: 36px;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 16px;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-card .menu-title { font-weight: 600; font-size: 16px; }
+        .menu-card .menu-desc { font-size: 13px; color: var(--secondary); }
+        .status-bar {
+            background: var(--white);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .status-item .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-online { background: var(--success); }
+        .dot-sync { background: var(--warning); }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .loading.active { display: block; }
+        .spinner {
+            border: 4px solid var(--primary-light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            z-index: 999;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .toast.show { display: block; }
+        .page-content { margin-top: 24px; }
+        .card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-box .number { font-size: 28px; font-weight: 700; }
+        .stat-box .label { font-size: 13px; color: var(--secondary); }
+        .stat-blue { background: var(--primary-light); }
+        .stat-yellow { background: #fef3c7; }
+        .stat-green { background: #d1fae5; }
+        .stat-red { background: #fecaca; }
+        .stat-blue .number { color: var(--primary); }
+        .stat-yellow .number { color: var(--warning); }
+        .stat-green .number { color: var(--success); }
+        .stat-red .number { color: var(--danger); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        table th {
+            background: #f8fafc;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-outline {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover { border-color: var(--primary); }
+        select, input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .absensi-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .absensi-btn:hover { transform: scale(1.1); }
+        .absensi-btn.active-s { background: #fef3c7; border-color: #f59e0b; }
+        .absensi-btn.active-i { background: #dbeafe; border-color: #3b82f6; }
+        .absensi-btn.active-a { background: #fecaca; border-color: #ef4444; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 24px; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); }
+            .status-bar { flex-direction: column; align-items: stretch; }
+        }
+        @media (max-width: 480px) {
+            .menu-grid { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-title">
-            <h1>SEKOLAHKU</h1>
-            <p>SMP SUNAN KALIJOGO 2 JABUNG</p>
-        </div>
-    </header>
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <i class="fas fa-school"></i>
+        <span>Sekolahku</span>
+    </div>
+    <div class="status-item">
+        <span class="dot dot-online"></span>
+        <span style="font-size:14px;color:var(--secondary);">Operator</span>
+    </div>
+</nav>
 
-    <div class="wrapper">
-        <aside>
-            <button class="menu-btn active">DASHBOARD</button>
-            <button class="menu-btn" onclick="openProfilModal()">DATA SEKOLAH</button>
-            <button class="menu-btn">ABSENSI KBM</button>
-            <button class="menu-btn">CATATAN TATIB</button>
-            <button class="menu-btn">PENILAIAN</button>
-            <button class="menu-btn">JURNAL GURU</button>
-            <button class="menu-btn">PERANGKAT</button>
-        </aside>
+<!-- ===== MAIN ===== -->
+<div class="container">
 
-        <main>
-            <div class="welcome-card">
-                <h2>Selamat Datang</h2>
-                <p>Sistem Data Sekolah Terintegrasi</p>
-            </div>
-
-            <div class="grid-container">
-                
-                <!-- KOTAK 1: PROFIL SEKOLAH (GAMBAR GEDUNG SEKOLAH 🏫) -->
-                <div class="card" onclick="openProfilModal()">
-                    <div class="card-top">
-                        <div class="card-icon">🏫</div>
-                        <div class="card-info">
-                            <div class="card-value">01</div>
-                            <div class="card-label">Profil Sekolah</div>
-                        </div>
-                    </div>
-                    <button class="card-action">Akses Detail ➔</button>
-                </div>
-                
-                <!-- KOTAK 2: TOTAL ROMBEL (GAMBAR GRAFIK DATA 📊) -->
-                <div class="card" onclick="openRombelModal()">
-                    <div class="card-top">
-                        <div class="card-icon">📊</div>
-                        <div class="card-info">
-                            <div class="card-value" id="box-rombel">19</div>
-                            <div class="card-label">Total Rombel</div>
-                        </div>
-                    </div>
-                    <button class="card-action">Akses Detail ➔</button>
-                </div>
-                
-                <!-- KOTAK 3: DATABASE GURU (GAMBAR GURU MENGAJAR 👨‍🏫) -->
-                <div class="card" onclick="openGuruModal()">
-                    <div class="card-top">
-                        <div class="card-icon">👨‍🏫</div>
-                        <div class="card-info">
-                            <div class="card-value" id="box-guru">33</div>
-                            <div class="card-label">Database Guru</div>
-                        </div>
-                    </div>
-                    <button class="card-action">Akses Detail ➔</button>
-                </div>
-                
-                <!-- KOTAK 4: SISWA AKTIF (GAMBAR TOPI TOGA 🎓) -->
-                <div class="card" onclick="openSiswaModal()">
-                    <div class="card-top">
-                        <div class="card-icon">🎓</div>
-                        <div class="card-info">
-                            <div class="card-value" id="box-siswa">427</div>
-                            <div class="card-label">Siswa Aktif (A/MM)</div>
-                        </div>
-                    </div>
-                    <button class="card-action">Akses Detail ➔</button>
-                </div>
-                
-            </div>
-            <footer style="border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 40px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">&copy; 2026 SMP SUNAN KALIJOGO 2 JABUNG • ALL RIGHTS RESERVED</footer>
-        </main>
+    <!-- Hero -->
+    <div class="hero">
+        <h1>📚 Selamat Datang di Sekolahku</h1>
+        <p>Sistem Manajemen Sekolah - Absensi, Penilaian, dan Raport Terintegrasi</p>
     </div>
 
-    <div id="dataModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-content-wrapper">
-                <div class="modal-header">
-                    <h3 id="modalTitle">Detail Data</h3>
-                    <button class="close-modal" onclick="closeModal()">×</button>
-                </div>
-                <div class="modal-body" id="modalBody">Memuat data riil...</div>
-            </div>
+    <!-- Menu -->
+    <div class="menu-grid" id="menuGrid">
+        <div class="menu-card" onclick="loadPage('data-sekolah')">
+            <i class="fas fa-database"></i>
+            <div class="menu-title">Data Sekolah</div>
+            <div class="menu-desc">Profil, Guru, Siswa, Kalender</div>
+        </div>
+        <div class="menu-card" onclick="loadPage('absensi')">
+            <i class="fas fa-clipboard-check"></i>
+            <div class="menu-title">Absensi</div>
+            <div class="menu-desc">Input & Laporan Kehadiran</div>
+        </div>
+        <div class="menu-card" onclick="loadPage('catatan')">
+            <i class="fas fa-sticky-note"></i>
+            <div class="menu-title">Catatan</div>
+            <div class="menu-desc">Catatan Guru & Kegiatan</div>
+        </div>
+        <div class="menu-card" onclick="loadPage('jurnal')">
+            <i class="fas fa-book-open"></i>
+            <div class="menu-title">Jurnal</div>
+            <div class="menu-desc">Jurnal Mengajar Guru</div>
+        </div>
+        <div class="menu-card" onclick="loadPage('perangkat')">
+            <i class="fas fa-tools"></i>
+            <div class="menu-title">Perangkat</div>
+            <div class="menu-desc">Pengaturan Aplikasi</div>
+        </div>
+        <div class="menu-card" style="opacity:0.6;cursor:default;">
+            <i class="fas fa-star"></i>
+            <div class="menu-title">Penilaian</div>
+            <div class="menu-desc">📌 Segera Hadir</div>
         </div>
     </div>
 
-    <script>
-        const WEB_API_URL = "https://google.com"; 
-        let databaseSekolah = { totalRombel: 19, totalGuru: 33, totalSiswa: 427, siswaDetail: [] };
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-item">
+            <span class="dot dot-online"></span>
+            <span>Status: <strong id="statusText">Online</strong></span>
+        </div>
+        <div class="status-item">
+            <span class="dot dot-sync"></span>
+            <span>Data: <strong id="syncStatus">Memuat...</strong></span>
+        </div>
+        <div class="status-item">
+            <span>Update: <strong id="lastUpdate">-</strong></span>
+        </div>
+        <button class="btn-primary" onclick="refreshData()">
+            <i class="fas fa-sync"></i> Refresh
+        </button>
+    </div>
 
-        async function muatDataOtomatis() {
-            try {
-                const respon = await fetch(WEB_API_URL + "?action=getAllDashboardData");
-                const textData = await respon.text();
-                const cleanText = textData.replace(/<\/?[^>]+(>|$)/g, "");
-                const data = JSON.parse(cleanText);
-                databaseSekolah = data;
-                
-                document.getElementById('box-rombel').innerText = data.totalRombel || "19";
-                document.getElementById('box-guru').innerText = data.totalGuru || "33";
-                document.getElementById('box-siswa').innerText = data.totalSiswa || "427";
-            } catch (e) {
-                console.error(e);
-            }
-        }
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Memuat data...</p>
+    </div>
 
-        function openProfilModal() {
-            document.getElementById('modalTitle').innerText = "PROFIL SEKOLAH MASTER";
-            document.getElementById('modalBody').innerHTML = `
-                <div class="detail-row"><b>Nama Sekolah</b><span>SMP SUNAN KALIJOGO 2 JABUNG</span></div>
-                <div class="detail-row"><b>Tahun Pelajaran</b><span>2026/2027</span></div>
-                <div class="detail-row"><b>Kepala Sekolah</b><span>MUHAMMAD MULYONO, S.E</span></div>
-                <div class="detail-row"><b>Tatib Sekolah</b><span>SITI FATHONAH, S.Si</span></div>
-                <div class="detail-row"><b>Lokasi/Tempat</b><span>Jabung</span></div>
+    <!-- Page Content -->
+    <div class="page-content" id="pageContent">
+        <div class="card" style="text-align:center;padding:40px;color:var(--secondary);">
+            <i class="fas fa-hand-point-up" style="font-size:48px;color:var(--primary);margin-bottom:16px;display:block;"></i>
+            <p style="font-size:18px;">Silakan pilih menu di atas 👆</p>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ============================================
+// KONFIGURASI - URL Web App ANDA
+// ============================================
+const CONFIG = {
+    API_URL: 'https://script.google.com/macros/s/AKfycbxUEMqnMs4Z88zjBOeYtfCTnKIdko1x_9JPuoazEvJaSByh0JE7RZO1eNLWX2n5niGLUA/exec'
+};
+
+// ============================================
+// STATE
+// ============================================
+let appData = {
+    profil: {},
+    rombel: [],
+    guru: [],
+    siswa: [],
+    statistik: {}
+};
+
+// ============================================
+// UTILITY
+// ============================================
+function showToast(msg, type = 'info') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#1e293b';
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function showLoading(show) {
+    document.getElementById('loading').classList.toggle('active', show);
+}
+
+// ============================================
+// FETCH DATA
+// ============================================
+async function fetchData() {
+    try {
+        showLoading(true);
+        document.getElementById('syncStatus').textContent = 'Memuat...';
+        
+        const response = await fetch(`${CONFIG.API_URL}?action=getAllDashboardData`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        
+        appData = data;
+        document.getElementById('syncStatus').textContent = '✅ Tersinkron';
+        document.getElementById('lastUpdate').textContent = data.statistik?.lastUpdate || new Date().toLocaleString('id-ID');
+        
+        showToast('Data berhasil dimuat!', 'success');
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('syncStatus').textContent = '❌ Gagal';
+        showToast('Gagal memuat data: ' + error.message, 'error');
+        return null;
+    } finally {
+        showLoading(false);
+    }
+}
+
+function refreshData() { fetchData(); }
+
+// ============================================
+// LOAD PAGE
+// ============================================
+function loadPage(page) {
+    const container = document.getElementById('pageContent');
+    
+    switch(page) {
+        case 'data-sekolah': renderDataSekolah(container); break;
+        case 'absensi': renderAbsensi(container); break;
+        default:
+            container.innerHTML = `
+                <div class="card" style="text-align:center;padding:40px;">
+                    <i class="fas fa-construction" style="font-size:48px;color:#f59e0b;margin-bottom:16px;display:block;"></i>
+                    <h3>Halaman ${page.replace('-',' ').toUpperCase()}</h3>
+                    <p style="color:var(--secondary);">Sedang dalam pengembangan 🚧</p>
+                </div>
             `;
-            document.getElementById('dataModal').style.display = 'flex';
-        }
+    }
+}
 
-        function openRombelModal() {
-            document.getElementById('modalTitle').innerText = "DAFTAR ROMBEL AKTIF";
+// ============================================
+// RENDER: DATA SEKOLAH
+// ============================================
+function renderDataSekolah(container) {
+    const { profil, rombel, guru, siswa, statistik } = appData;
+    
+    let html = `
+        <div class="grid-2">
+            <!-- Profil -->
+            <div class="card">
+                <h3><i class="fas fa-building"></i> Profil Sekolah</h3>
+                <div style="display:grid;gap:8px;">
+                    <p><strong>Nama:</strong> ${profil.namaSekolah || '-'}</p>
+                    <p><strong>Tahun Pelajaran:</strong> ${profil.tahunPelajaran || '-'}</p>
+                    <p><strong>Kepala Sekolah:</strong> ${profil.kepalaSekolah || '-'}</p>
+                    <p><strong>Tatib:</strong> ${profil.tatib || '-'}</p>
+                    <p><strong>Tempat:</strong> ${profil.tempat || '-'}</p>
+                </div>
+            </div>
+            
+            <!-- Statistik -->
+            <div class="card">
+                <h3><i class="fas fa-chart-pie"></i> Statistik</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="stat-box stat-blue">
+                        <div class="number">${statistik.totalSiswa || 0}</div>
+                        <div class="label">Siswa</div>
+                    </div>
+                    <div class="stat-box stat-yellow">
+                        <div class="number">${statistik.totalRombel || 0}</div>
+                        <div class="label">Rombel</div>
+                    </div>
+                    <div class="stat-box stat-green">
+                        <div class="number">${statistik.totalGuru || 0}</div>
+                        <div class="label">Guru</div>
+                    </div>
+                    <div class="stat-box" style="background:#f1f5f9;">
+                        <div class="number" style="font-size:14px;">${statistik.lastUpdate || '-'}</div>
+                        <div class="label">Update</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rombel -->
+        <div class="card">
+            <h3><i class="fas fa-users"></i> Daftar Rombel</h3>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead><tr><th>No</th><th>Wali Kelas</th><th>Rombel</th><th>Jumlah Siswa</th></tr></thead>
+                    <tbody>
+    `;
+    
+    if (rombel && rombel.length > 0) {
+        rombel.forEach((r, i) => {
+            const count = siswa ? siswa.filter(s => s.rombel === r.rombel).length : 0;
+            html += `<tr><td>${i+1}</td><td>${r.wali || '-'}</td><td><strong>${r.rombel || '-'}</strong></td><td>${count} siswa</td></tr>`;
+        });
+    } else {
+        html += `<tr><td colspan="4" style="text-align:center;color:var(--secondary);">Belum ada data</td></tr>`;
+    }
+    
+    html += `</tbody></table></div></div>`;
+    container.innerHTML = html;
+}
+
+// ============================================
+// RENDER: ABSENSI
+// ============================================
+function renderAbsensi(container) {
+    const { rombel } = appData;
+    
+    let html = `
+        <div class="grid-2">
+            <!-- Input Absensi -->
+            <div class="card">
+                <h3><i class="fas fa-pen"></i> Absensi Harian</h3>
+                <p style="color:var(--secondary);font-size:14px;margin-bottom:16px;">Pilih tanggal dan rombel</p>
+                
+                <div style="display:grid;gap:12px;">
+                    <div>
+                        <label style="font-weight:600;font-size:14px;display:block;margin-bottom:4px;">📅 Tanggal</label>
+                        <input type="date" id="absensiDate">
+                    </div>
+                    <div>
+                        <label style="font-weight:600;font-size:14px;display:block;margin-bottom:4px;">🏫 Rombel</label>
+                        <select id="absensiRombel">
+                            <option value="">Pilih Rombel</option>
+    `;
+    
+    if (rombel && rombel.length > 0) {
+        rombel.forEach(r => {
+            html += `<option value="${r.rombel}">${r.rombel} - ${r.wali || ''}</option>`;
+        });
+    }
+    
+    html += `
+                        </select>
+                    </div>
+                    <button class="btn-primary" onclick="loadAbsensi()">
+                        <i class="fas fa-search"></i> Tampilkan Siswa
+                    </button>
+                </div>
+                
+                <div id="absensiList" style="margin-top:20px;">
+                    <p style="color:var(--secondary);text-align:center;padding:20px;">Pilih tanggal dan rombel</p>
+                </div>
+            </div>
+            
+            <!-- Laporan -->
+            <div class="card">
+                <h3><i class="fas fa-file-alt"></i> Laporan Absensi</h3>
+                <p style="color:var(--secondary);font-size:14px;margin-bottom:16px;">Pilih jenis laporan</p>
+                
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+                    <button class="btn-outline" onclick="showReport('harian')"><i class="fas fa-calendar-day"></i> Harian</button>
+                    <button class="btn-outline" onclick="showReport('mingguan')"><i class="fas fa-calendar-week"></i> Mingguan</button>
+                    <button class="btn-outline" onclick="showReport('bulanan')"><i class="fas fa-calendar-alt"></i> Bulanan</button>
+                    <button class="btn-outline" onclick="showReport('semester')"><i class="fas fa-clock"></i> Semester</button>
+                </div>
+                <button class="btn-outline" style="width:100%;" onclick="showReport('tahunan')">
+                    <i class="fas fa-calendar-year"></i> Tahunan
+                </button>
+                
+                <div id="reportPreview" style="margin-top:16px;background:#f8fafc;padding:16px;border-radius:8px;min-height:50px;">
+                    <p style="color:var(--secondary);text-align:center;font-size:14px;">Pilih jenis laporan di atas</p>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+// ============================================
+// FUNGSI: LOAD ABSENSI
+// ============================================
+function loadAbsensi() {
+    const date = document.getElementById('absensiDate').value;
+    const rombel = document.getElementById('absensiRombel').value;
+    
+    if (!date || !rombel) {
+        showToast('Pilih tanggal dan rombel!', 'error');
+        return;
+    }
+    
+    const container = document.getElementById('absensiList');
+    const siswaData = appData.siswa || [];
+    const filtered = siswaData.filter(s => s.rombel === rombel);
+    
+    if (filtered.length === 0) {
+        container.innerHTML = `<p style="color:var(--secondary);text-align:center;padding:20px;">Tidak ada siswa di ${rombel}</p>`;
+        return;
+    }
+    
+    let html = `
+        <div style="overflow-x:auto;">
+            <table>
+                <thead><tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th style="text-align:center;">S</th>
+                    <th style="text-align:center;">I</th>
+                    <th style="text-align:center;">A</th>
+                    <th>Ket.</th>
+                </tr></thead>
+                <tbody>
+    `;
+    
+    filtered.forEach((s, i) => {
+        const isActive = s.ket === 'A' || s.ket === 'MM';
+        html += `
+            <tr style="${!isActive ? 'opacity:0.5;' : ''}">
+                <td>${i+1}</td>
+                <td>${s.nama || '-'}</td>
+                <td style="text-align:center;">
+                    <button class="absensi-btn" onclick="setStatus(${i},'S')" id="btn-${i}-S">S</button>
+                </td>
+                <td style="text-align:center;">
+                    <button class="absensi-btn" onclick="setStatus(${i},'I')" id="btn-${i}-I">I</button>
+                </td>
+                <td style="text-align:center;">
+                    <button class="absensi-btn" onclick="setStatus(${i},'A')" id="btn-${i}-A">A</button>
+                </td>
+                <td style="font-size:12px;color:var(--secondary);">${s.ket || '-'}</td>
+            </tr>
+        `;
+    });
+    
+    html += `
+                </tbody>
+            </table>
+            <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+                <button class="btn-success" onclick="saveAbsensi()"><i class="fas fa-save"></i> Simpan</button>
+                <button class="btn-danger" onclick="resetAbsensi()"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+            <div style="margin-top:8px;font-size:12px;color:var(--secondary);">
+                <span>🟡 S = Sakit | 🔵 I = Izin | 🔴 A = Alfa | ⚪ Kosong = Hadir</span>
+            </div>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+// ============================================
+// FUNGSI: SET STATUS ABSENSI
+// ============================================
+function setStatus(index, status) {
+    ['S', 'I', 'A'].forEach(s => {
+        const btn = document.getElementById(`btn-${index}-${s}`);
+        if (btn) btn.className = 'absensi-btn';
+    });
+    const btn = document.getElementById(`btn-${index}-${status}`);
+    if (btn) btn.classList.add(`active-${status.toLowerCase()}`);
+}
+
+// ============================================
+// FUNGSI: SAVE ABSENSI
+// ============================================
+function saveAbsensi() {
+    showToast('Fitur simpan akan terhubung ke Google Sheets', 'info');
+}
+
+// ============================================
+// FUNGSI: RESET ABSENSI
+// ============================================
+function resetAbsensi() {
+    document.querySelectorAll('.absensi-btn').forEach(btn => {
+        btn.className = 'absensi-btn';
+    });
+    showToast('Reset berhasil', 'success');
+}
+
+// ============================================
+// FUNGSI: SHOW REPORT
+// ============================================
+function showReport(type) {
+    const container = document.getElementById('reportPreview');
+    const labels = {
+        harian: '📅 Laporan Harian',
+        mingguan: '📆 Laporan Mingguan',
+        bulanan: '📊 Laporan Bulanan',
+        semester: '📈 Laporan Semester',
+        tahunan: '📉 Laporan Tahunan'
+    };
+    container.innerHTML = `
+        <div style="text-align:center;padding:16px;">
+            <p style="font-weight:600;color:var(--primary);">${labels[type] || type}</p>
+            <p style="color:var(--secondary);font-size:14px;">Fitur laporan ${type} akan segera hadir</p>
+            <button class="btn-primary" style="margin-top:12px;" onclick="showToast('Fitur cetak akan segera hadir','info')">
+                <i class="fas fa-print"></i> Cetak
+            </button>
+        </div>
+    `;
+}
+
+// ============================================
+// INIT
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    fetchData();
+    
+    // Set tanggal default = hari ini
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('absensiDate');
+    if (dateInput) dateInput.value = today;
+});
+</script>
+</body>
+</html>
