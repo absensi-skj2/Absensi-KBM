@@ -4,62 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sekolahku - Absensi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: #f1f5f9; color: #1e293b; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .card { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-success { background: #22c55e; color: white; }
-        .btn-danger { background: #ef4444; color: white; }
-        select, input[type="date"] { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; margin-top: 4px; }
+        body { font-family: Arial, sans-serif; background: #f1f5f9; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-blue { background: #2563eb; color: white; }
+        .btn-green { background: #22c55e; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+        select, input[type="date"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin: 4px 0; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { background: #f8fafc; padding: 10px; text-align: left; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
-        .absensi-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-weight: bold; }
-        .absensi-btn.active-s { background: #fef3c7; border-color: #f59e0b; }
-        .absensi-btn.active-i { background: #dbeafe; border-color: #3b82f6; }
-        .absensi-btn.active-a { background: #fecaca; border-color: #ef4444; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        th { background: #f8fafc; padding: 8px; text-align: left; border-bottom: 2px solid #ddd; }
+        td { padding: 6px; border-bottom: 1px solid #eee; }
+        .btn-s { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #ccc; background: white; cursor: pointer; font-weight: bold; }
+        .btn-s.active-s { background: #fef3c7; border-color: #f59e0b; }
+        .btn-s.active-i { background: #dbeafe; border-color: #3b82f6; }
+        .btn-s.active-a { background: #fecaca; border-color: #ef4444; }
         .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 10px; display: none; z-index: 999; }
-        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .flex { display: flex; gap: 8px; flex-wrap: wrap; }
+        .mt-10 { margin-top: 10px; }
+        .mb-10 { margin-bottom: 10px; }
+        .text-center { text-align: center; }
+        .text-gray { color: #64748b; }
+        .fw-bold { font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 style="color:#2563eb;">📚 Sekolahku</h1>
-        <p style="color:#64748b;">Sistem Absensi Online</p>
-        <hr style="margin: 16px 0;">
+        <p class="text-gray">Sistem Absensi Online</p>
+        <hr style="margin: 12px 0;">
 
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
-            <button class="btn btn-primary" onclick="loadPage('absensi')"><i class="fas fa-clipboard-check"></i> Absensi</button>
-            <button class="btn btn-primary" onclick="loadPage('data-sekolah')"><i class="fas fa-database"></i> Data Sekolah</button>
+        <div class="flex">
+            <button class="btn btn-blue" onclick="loadPage('absensi')">✏️ Absensi</button>
+            <button class="btn btn-blue" onclick="loadPage('data-sekolah')">🏫 Data Sekolah</button>
+            <button class="btn btn-blue" onclick="fetchData()">🔄 Refresh</button>
         </div>
 
-        <div class="card" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-            <span>Status: <strong id="statusText">Online</strong></span>
-            <span>Data: <strong id="syncStatus">Memuat...</strong></span>
+        <div class="card" style="margin-top:12px;">
+            <span>Status: <strong id="statusText">Online</strong></span> |
+            <span>Data: <strong id="syncStatus">Memuat...</strong></span> |
             <span>Update: <strong id="lastUpdate">-</strong></span>
-            <button class="btn btn-primary" onclick="refreshData()"><i class="fas fa-sync"></i> Refresh</button>
         </div>
 
         <div id="pageContent">
-            <div class="card" style="text-align:center; color:#64748b;"><p>Silakan pilih menu di atas</p></div>
+            <div class="card text-center text-gray">Silakan pilih menu di atas</div>
         </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-        // ============================================
-        // KONFIGURASI - URL Web App TERBARU
-        // ============================================
-        const CONFIG = {
-            API_URL: 'https://script.google.com/macros/s/AKfycbyQMJQv7ksi35Kls8v94stj9TcvpDWVrcBmbRDK2g657R2UyLM7uGLMzDRtGy2Cw8Q1LQ/exec'
-        };
+        // ==========================================
+        // 🔥 URL Web App ANDA - SUDAH SAYA MASUKKAN
+        // ==========================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxvy-7Ji0BuWYPuls-4q9vh0roCKBiAPaW6ewV5UTRP70FDvh9a-m_3AMtH6iYowFGNQg/exec';
 
         let appData = { profil: {}, rombel: [], siswa: [] };
 
@@ -75,7 +75,7 @@
         async function fetchData() {
             try {
                 document.getElementById('syncStatus').textContent = 'Memuat...';
-                const res = await fetch(`${CONFIG.API_URL}?action=getAllDashboardData`);
+                const res = await fetch(`${API_URL}?action=getAllDashboardData`);
                 if (!res.ok) throw new Error('Gagal fetch data');
                 const data = await res.json();
                 if (data.error) throw new Error(data.error);
@@ -90,16 +90,31 @@
             }
         }
 
-        function refreshData() { fetchData(); }
-
         function loadPage(page) {
             const container = document.getElementById('pageContent');
             if (page === 'data-sekolah') {
                 const { profil, rombel, statistik } = appData;
                 container.innerHTML = `
-                    <div class="card"><h3>🏫 Profil Sekolah</h3><p><strong>Nama:</strong> ${profil.namaSekolah || '-'}</p><p><strong>Tahun Pelajaran:</strong> ${profil.tahunPelajaran || '-'}</p><p><strong>Kepala Sekolah:</strong> ${profil.kepalaSekolah || '-'}</p></div>
-                    <div class="card"><h3>📊 Statistik</h3><p>Total Rombel: <strong>${statistik?.totalRombel || 0}</strong></p><p>Total Siswa: <strong>${statistik?.totalSiswa || 0}</strong></p><p>Update: ${statistik?.lastUpdate || '-'}</p></div>
-                    <div class="card"><h3>📋 Daftar Rombel</h3><table><tr><th>No</th><th>Wali Kelas</th><th>Rombel</th></tr>${rombel.map((r,i) => `<tr><td>${i+1}</td><td>${r.wali || '-'}</td><td><strong>${r.rombel || '-'}</strong></td></tr>`).join('')}${rombel.length === 0 ? '<tr><td colspan="3">Belum ada data</td></tr>' : ''}</table></div>
+                    <div class="card">
+                        <h3>🏫 Profil Sekolah</h3>
+                        <p><strong>Nama:</strong> ${profil.namaSekolah || '-'}</p>
+                        <p><strong>Tahun Pelajaran:</strong> ${profil.tahunPelajaran || '-'}</p>
+                        <p><strong>Kepala Sekolah:</strong> ${profil.kepalaSekolah || '-'}</p>
+                    </div>
+                    <div class="card">
+                        <h3>📊 Statistik</h3>
+                        <p>Total Rombel: <strong>${statistik?.totalRombel || 0}</strong></p>
+                        <p>Total Siswa: <strong>${statistik?.totalSiswa || 0}</strong></p>
+                        <p>Update: ${statistik?.lastUpdate || '-'}</p>
+                    </div>
+                    <div class="card">
+                        <h3>📋 Daftar Rombel</h3>
+                        <table>
+                            <tr><th>No</th><th>Wali Kelas</th><th>Rombel</th></tr>
+                            ${rombel.map((r,i) => `<tr><td>${i+1}</td><td>${r.wali || '-'}</td><td><strong>${r.rombel || '-'}</strong></td></tr>`).join('')}
+                            ${rombel.length === 0 ? '<tr><td colspan="3" class="text-center text-gray">Belum ada data</td></tr>' : ''}
+                        </table>
+                    </div>
                 `;
             } else if (page === 'absensi') {
                 renderAbsensi(container);
@@ -113,27 +128,37 @@
             if (rombel.length === 0) options += '<option value="">Belum ada data</option>';
 
             container.innerHTML = `
-                <div class="grid-2">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
                     <div class="card">
                         <h3>✏️ Absensi Harian</h3>
-                        <div style="display:grid; gap:12px;">
-                            <div><label>📅 Tanggal</label><input type="date" id="absensiDate"></div>
-                            <div><label>🏫 Rombel</label><select id="absensiRombel">${options}</select></div>
-                            <button class="btn btn-primary" onclick="loadAbsensi()"><i class="fas fa-search"></i> Tampilkan Siswa</button>
+                        <div style="display:grid; gap:8px;">
+                            <div>
+                                <label>📅 Tanggal</label>
+                                <input type="date" id="absensiDate">
+                            </div>
+                            <div>
+                                <label>🏫 Rombel</label>
+                                <select id="absensiRombel">${options}</select>
+                            </div>
+                            <button class="btn btn-blue" onclick="loadAbsensi()">🔍 Tampilkan Siswa</button>
                         </div>
-                        <div id="absensiList" style="margin-top:16px;"><p style="color:#64748b; text-align:center;">Pilih tanggal dan rombel</p></div>
+                        <div id="absensiList" style="margin-top:12px;">
+                            <p class="text-gray text-center">Pilih tanggal dan rombel</p>
+                        </div>
                     </div>
                     <div class="card">
                         <h3>📄 Laporan Absensi</h3>
-                        <p style="color:#64748b;">Pilih jenis laporan</p>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;">
-                            <button class="btn btn-primary" onclick="showReport('harian')">Harian</button>
-                            <button class="btn btn-primary" onclick="showReport('mingguan')">Mingguan</button>
-                            <button class="btn btn-primary" onclick="showReport('bulanan')">Bulanan</button>
-                            <button class="btn btn-primary" onclick="showReport('semester')">Semester</button>
+                        <p class="text-gray">Pilih jenis laporan</p>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px;">
+                            <button class="btn btn-blue" onclick="showReport('harian')">Harian</button>
+                            <button class="btn btn-blue" onclick="showReport('mingguan')">Mingguan</button>
+                            <button class="btn btn-blue" onclick="showReport('bulanan')">Bulanan</button>
+                            <button class="btn btn-blue" onclick="showReport('semester')">Semester</button>
                         </div>
-                        <button class="btn btn-primary" style="width:100%; margin-top:8px;" onclick="showReport('tahunan')">Tahunan</button>
-                        <div id="reportPreview" style="margin-top:16px; background:#f8fafc; padding:16px; border-radius:8px; min-height:50px; color:#64748b; text-align:center;">Pilih jenis laporan</div>
+                        <button class="btn btn-blue" style="width:100%; margin-top:6px;" onclick="showReport('tahunan')">Tahunan</button>
+                        <div id="reportPreview" style="margin-top:12px; background:#f8fafc; padding:12px; border-radius:6px; min-height:40px; color:#64748b; text-align:center;">
+                            Pilih jenis laporan
+                        </div>
                     </div>
                 </div>
             `;
@@ -146,24 +171,45 @@
 
             const container = document.getElementById('absensiList');
             const filtered = appData.siswa.filter(s => s.rombel === rombel);
-            if (filtered.length === 0) { container.innerHTML = `<p style="color:#64748b; text-align:center;">Tidak ada siswa di ${rombel}</p>`; return; }
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-gray text-center">Tidak ada siswa di ${rombel}</p>`;
+                return;
+            }
 
             let html = `<table><tr><th>No</th><th>Nama</th><th>S</th><th>I</th><th>A</th><th>Ket</th></tr>`;
             filtered.forEach((s, i) => {
-                html += `<tr><td>${i+1}</td><td>${s.nama || '-'}</td><td><button class="absensi-btn" onclick="setStatus(${i},'S')" id="btn-${i}-S">S</button></td><td><button class="absensi-btn" onclick="setStatus(${i},'I')" id="btn-${i}-I">I</button></td><td><button class="absensi-btn" onclick="setStatus(${i},'A')" id="btn-${i}-A">A</button></td><td>${s.ket || '-'}</td></tr>`;
+                html += `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td>${s.nama || '-'}</td>
+                        <td><button class="btn-s" onclick="setStatus(${i},'S')" id="btn-${i}-S">S</button></td>
+                        <td><button class="btn-s" onclick="setStatus(${i},'I')" id="btn-${i}-I">I</button></td>
+                        <td><button class="btn-s" onclick="setStatus(${i},'A')" id="btn-${i}-A">A</button></td>
+                        <td>${s.ket || '-'}</td>
+                    </tr>
+                `;
             });
-            html += `</table><div style="margin-top:12px; display:flex; gap:12px;"><button class="btn btn-success" onclick="saveAbsensi()"><i class="fas fa-save"></i> Simpan</button><button class="btn btn-danger" onclick="resetAbsensi()"><i class="fas fa-undo"></i> Reset</button></div><p style="font-size:12px; color:#64748b; margin-top:8px;">🟡 S=Sakit 🔵 I=Izin 🔴 A=Alfa ⚪ Kosong=Hadir</p>`;
+            html += `</table>
+                <div class="flex mt-10">
+                    <button class="btn btn-green" onclick="saveAbsensi()">💾 Simpan</button>
+                    <button class="btn btn-red" onclick="resetAbsensi()">↺ Reset</button>
+                </div>
+                <p style="font-size:12px; color:#64748b; margin-top:6px;">🟡 S=Sakit 🔵 I=Izin 🔴 A=Alfa ⚪ Kosong=Hadir</p>
+            `;
             container.innerHTML = html;
         }
 
         function setStatus(index, status) {
-            ['S','I','A'].forEach(s => { const btn = document.getElementById(`btn-${index}-${s}`); if (btn) btn.className = 'absensi-btn'; });
+            ['S','I','A'].forEach(s => {
+                const btn = document.getElementById(`btn-${index}-${s}`);
+                if (btn) btn.className = 'btn-s';
+            });
             const btn = document.getElementById(`btn-${index}-${status}`);
             if (btn) btn.classList.add(`active-${status.toLowerCase()}`);
         }
 
         function resetAbsensi() {
-            document.querySelectorAll('.absensi-btn').forEach(b => b.className = 'absensi-btn');
+            document.querySelectorAll('.btn-s').forEach(b => b.className = 'btn-s');
             showToast('Reset berhasil', 'success');
         }
 
@@ -183,7 +229,7 @@
             });
 
             try {
-                const res = await fetch(CONFIG.API_URL, {
+                const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'saveAbsensi', tanggal, rombel, data: siswaData })
@@ -201,7 +247,11 @@
         }
 
         function showReport(type) {
-            document.getElementById('reportPreview').innerHTML = `<p style="font-weight:600; color:#2563eb;">📊 Laporan ${type}</p><p>Fitur laporan ${type} akan segera hadir</p><button class="btn btn-primary" onclick="showToast('Fitur cetak segera hadir','info')">🖨️ Cetak</button>`;
+            document.getElementById('reportPreview').innerHTML = `
+                <p style="font-weight:600; color:#2563eb;">📊 Laporan ${type}</p>
+                <p class="text-gray">Fitur laporan ${type} akan segera hadir</p>
+                <button class="btn btn-blue" onclick="showToast('Fitur cetak segera hadir','info')">🖨️ Cetak</button>
+            `;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
